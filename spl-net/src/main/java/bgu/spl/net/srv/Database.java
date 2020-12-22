@@ -46,6 +46,7 @@ public class Database {
       boolean initialize(String coursesFilePath) {
         File file = new File(coursesFilePath);
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+            User.initializeCourseArray(coursesFilePath); //the weird sorted by file, array of courses user has registered to
             String courseLine = "";
             while ((courseLine = br.readLine()) != null) {
                 int courseNum = Integer.decode(translate(courseLine)); // course ID
@@ -69,6 +70,7 @@ public class Database {
         } catch (IOException ex) {
             return false;
         }
+
         return true;
     }
 
