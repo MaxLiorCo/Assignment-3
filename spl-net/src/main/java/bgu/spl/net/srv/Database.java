@@ -5,6 +5,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Passive object representing the Database where all courses and users are stored.
@@ -16,22 +18,25 @@ import java.io.FileReader;
  */
 public class Database {
 
+    Map<String, User> registeredUsers;
+    Map<Integer, Course> courses;
 
     private static class SingletonHolder{
-        private static final Database database = new Database();
+        private static final Database dataBase = new Database();
     }
 
 
     //to prevent user from creating new Database
     private Database() {
-        // TODO: implement
+        registeredUsers = new HashMap<>();
+        courses = new HashMap<>();
     }
 
     /**
      * Retrieves the single instance of this class.
      */
     public static Database getInstance() {
-        return SingletonHolder.database;
+        return SingletonHolder.dataBase;
     }
 
     /**
