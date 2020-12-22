@@ -22,10 +22,15 @@ public class Course {
     /**
      *  This function is called when we want to register a student.
      *  <p>
-     *  !!!Note:
+     *  !!!Note: the function assumes the student has all kdam courses!!!
       * @returns true if successfully registered, otherwise false.
      */
-    public synchronized boolean register(){
+
+    public void addKdamCourse(int num){
+        kdamCourses.put(num, false);
+    }
+
+    public synchronized boolean registerStudent(){
         if (numOfMaxStudents < numOfMaxStudents){
             numOfRegisteredStudents++;
             return true;

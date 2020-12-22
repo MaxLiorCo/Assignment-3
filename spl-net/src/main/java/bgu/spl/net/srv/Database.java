@@ -1,11 +1,10 @@
 package bgu.spl.net.srv;
 
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.*;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -21,7 +20,8 @@ public class Database {
     Map<String, User> registeredUsers;
     Map<Integer, Course> courses;
 
-    private static class SingletonHolder{
+
+    private static class SingletonHolder {
         private static final Database dataBase = new Database();
     }
 
@@ -43,13 +43,73 @@ public class Database {
      * loades the courses from the file path specified
      * into the Database, returns true if successful.
      */
-    boolean initialize(String coursesFilePath) {
+      boolean initialize(String coursesFilePath) {
         File file = new File(coursesFilePath);
-        try {
-            BufferedReader br = new BufferedReader(new FileReader(file));
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+            String courseLine = "";
+            while ((courseLine = br.readLine()) != null) {
+                int courseNum = Integer.decode(translate(courseLine));
+                courseLine = courseLine.substring(courseLine.indexOf('|') + 1);
+
+                String courseName = translate(courseLine);
+                courseLine = courseLine.substring(courseLine.indexOf('|') + 1);
+
+                List<Integer> kdamCourses = translateKdam(courseLine);
+                courseLine = courseLine.substring(courseLine.indexOf('|') + 1);
+
+                int max = Integer.decode(translate(courseLine));
+
+                Course toAdd = new Course(courseNum, courseName, max);
+                for (int id : kdamCourses)
+                    toAdd.addKdamCourse(id);
+                courses.put(courseNum, toAdd);
+            }
         } catch (FileNotFoundException ex) {
+            return false;
+        } catch (IOException ex) {
             return false;
         }
         return true;
+    }
+
+    private List<Integer> translateKdam(String courseLine) {
+        List<Integer> kdamCourses = new LinkedList<>();
+        String helper = "";
+        for (int i = 0; i < courseLine.length(); i++) {
+            char temp = courseLine.charAt(i);
+            if (temp == '[' | temp == ']') {
+                if (!helper.isEmpty())
+                    kdamCourses.add(Integer.decode(helper));
+                continue;
+            }
+            if (temp == '|') {
+                break;
+            }
+            if (temp == ',') {
+                kdamCourses.add(Integer.decode(helper));
+                helper = "";
+            } else {
+                helper = helper + temp;
+            }
+        }
+        return kdamCourses;
+    }
+
+    /**
+     * Returns the course num, in addition removes the "courseNum|" section from courseLine.
+     *
+     * @param courseLine
+     * @return CourseNum
+     */
+    private String translate(String courseLine) {
+        String accumulator = "";
+        for (int i = 0; i < courseLine.length(); i++) {
+            char temp = courseLine.charAt(i);
+            if (temp == '|') {
+                break;
+            }
+            accumulator = accumulator + temp;
+        }
+        return accumulator;
     }
 }
