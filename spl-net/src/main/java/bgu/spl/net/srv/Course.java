@@ -31,7 +31,7 @@ public class Course {
      * @throws Error exception upon failed registration attempt.
      */
     public synchronized boolean registerStudent(User student) throws Error { //TODO synchronized may be unnecessary
-        if (numOfRegisteredStudents < numOfMaxStudents && assertKdam(student.getNumCourseArray())){
+        if (numOfRegisteredStudents < numOfMaxStudents && assertKdam(student.getRegisteredCoursesArray())){
             registeredStudentList.add(student);
             numOfRegisteredStudents++;
             return true;
