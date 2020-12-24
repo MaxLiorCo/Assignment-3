@@ -35,7 +35,7 @@ public class Course {
      *  !!!Note: the function assumes the student has all kdam courses!!!
      * @returns true if successfully registered, otherwise false.
      */
-    public synchronized boolean registerStudent(){
+    public synchronized boolean registerStudent(User student){
         if (numOfRegisteredStudents < numOfMaxStudents){
             numOfRegisteredStudents++;
             return true;

@@ -9,7 +9,7 @@ import java.util.List;
 public class User {
     private String user;
     private String password;
-    private static int[] courseArray;
+    private static int[] allCourses;
     private List<Integer> courseIndex;
     private boolean isAdmin;
 
@@ -34,27 +34,30 @@ public class User {
                 int courseNum = Integer.decode(courseLine.substring(0,currIndex));
                 listCourse.add(courseNum);
             }
-            courseArray = new int[listCourse.size()];
+            allCourses = new int[listCourse.size()];
             int currIndex = 0;
             for (Integer course : listCourse){
-                courseArray[currIndex] = course;
+                allCourses[currIndex] = course;
                 currIndex++;
             }
         }
-    catch (FileNotFoundException ex){}
-    catch (IOException ex) { }
+    catch (FileNotFoundException ex){ ex.printStackTrace(); }
+    catch (IOException ex) { ex.printStackTrace(); }
     }
 
-    //register students to course
+    //register course to student
     public void registerToCourse(Course course) throws Error{
         synchronized(course) {
             boolean registered = false;
-            if (course.getNumOfRegisteredStudents() == course.getNumOfMaxStudents())
-                throw new Error("course is full");
+            if(course == null)
+                throw new Error("no such course");
+
+            //should take care of "course is full" & "no relevant kdam courses"
+            course.registerStudent(this);
 
             int courseNum = course.getCourseNum();
-            for (int indexOfCourse = 0; indexOfCourse < courseArray.length && !registered; indexOfCourse++) {
-                if (courseArray[indexOfCourse] == courseNum) {
+            for (int indexOfCourse = 0; indexOfCourse < allCourses.length && !registered; indexOfCourse++) {
+                if (allCourses[indexOfCourse] == courseNum) {
                     //insert into list by index size
                     int insertIndex = 0;
                     Iterator<Integer> it = courseIndex.iterator();
@@ -77,23 +80,25 @@ public class User {
                     }
                 }
             }
-            if (registered)
-                course.registerStudent(this);
-            else
-                throw new Error(" no such course");
         }
     }
 
-    public Integer[] getNumCourseArray(){
-        return (Integer[])courseIndex.toArray();
+    public Integer[] getRegisteredCoursesArray(){
+        Integer[] array = new Integer[courseIndex.size()];
+        int i = 0;
+        for(int indexInAllCourses : courseIndex){
+            array[i] = allCourses[indexInAllCourses];
+            i++;
+        }
+        return array;
     }
 
     public boolean isAdmin(){
         return isAdmin;
     }
 
-    public List<Integer> getListOfCourseIndex(){
+/*    public List<Integer> getListOfCourseIndexInAllCoursesArray(){
         return courseIndex;
-    }
+    }*/
 
 }
