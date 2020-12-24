@@ -8,6 +8,7 @@ import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
+//TODO delete this shit
 public class ConnectionHandlerImp implements ConnectionHandler<String>{
     private final MessagingProtocol<String> protocol;
     private final MessageEncoderDecoder<String> encdec;

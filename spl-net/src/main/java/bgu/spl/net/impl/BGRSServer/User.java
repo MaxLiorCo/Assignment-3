@@ -1,4 +1,6 @@
-package bgu.spl.net.srv;
+package bgu.spl.net.impl.BGRSServer;
+
+import bgu.spl.net.impl.BGRSServer.Course;
 
 import java.io.*;
 import java.util.ArrayList;

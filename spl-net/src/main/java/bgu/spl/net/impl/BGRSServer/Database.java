@@ -1,4 +1,4 @@
-package bgu.spl.net.srv;
+package bgu.spl.net.impl.BGRSServer;
 
 
 import java.io.*;
@@ -17,8 +17,8 @@ import java.util.Map;
  */
 public class Database {
 
-    Map<String, User> registeredUsers;
-    Map<Integer, Course> courses;
+    private Map<String, User> registeredUsers;
+    private Map<Integer, Course> courses;
 
 
     private static class SingletonHolder {
