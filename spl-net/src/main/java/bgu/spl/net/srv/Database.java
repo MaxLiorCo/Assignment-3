@@ -43,25 +43,25 @@ public class Database {
      * loades the courses from the file path specified
      * into the Database, returns true if successful.
      */
-      boolean initialize(String coursesFilePath) {
+      public boolean initialize(String coursesFilePath) {
         File file = new File(coursesFilePath);
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             User.initializeCourseArray(coursesFilePath); //the weird sorted by file, array of courses user has registered to
             String courseLine = "";
             while ((courseLine = br.readLine()) != null) {
-                int courseNum = Integer.decode(translate(courseLine));
+                int courseNum = Integer.decode(parser(courseLine)); // course ID
                 courseLine = courseLine.substring(courseLine.indexOf('|') + 1);
 
-                String courseName = translate(courseLine);
+                String courseName = parser(courseLine); // course name
                 courseLine = courseLine.substring(courseLine.indexOf('|') + 1);
 
-                List<Integer> kdamCourses = translateKdam(courseLine);
+                List<Integer> kdamCourses = parseKdam(courseLine); // kdamCourses of the course
                 courseLine = courseLine.substring(courseLine.indexOf('|') + 1);
 
-                int max = Integer.decode(translate(courseLine));
+                int max = Integer.decode(parser(courseLine)); // max students allowed to study this course concurrently
 
-                Course toAdd = new Course(courseNum, courseName, max);
-                for (int id : kdamCourses)
+                Course toAdd = new Course(courseNum, courseName, max); // Creating the course that will be added to the map
+                for (int id : kdamCourses) // registering kdamCourses
                     toAdd.addKdamCourse(id);
                 courses.put(courseNum, toAdd);
             }
@@ -74,23 +74,27 @@ public class Database {
         return true;
     }
 
-    private List<Integer> translateKdam(String courseLine) {
+    /**
+     * @param courseLine
+     * @return List of kdamCourses of a specific course
+     */
+    private List<Integer> parseKdam(String courseLine) {
         List<Integer> kdamCourses = new LinkedList<>();
         String helper = "";
         for (int i = 0; i < courseLine.length(); i++) {
             char temp = courseLine.charAt(i);
             if (temp == '[' | temp == ']') {
-                if (!helper.isEmpty())
+                if (!helper.isEmpty()) // will happen in situations like this: "[]", or "[.....,111]". In the first we don't add any course of course, but in the second we do.
                     kdamCourses.add(Integer.decode(helper));
                 continue;
             }
-            if (temp == '|') {
+            if (temp == '|') { // reached to the end of the kdamCourses sections, finished here
                 break;
             }
-            if (temp == ',') {
+            if (temp == ',') { // moving to next kdamCouse, current kdamCourse is translated and may be added to the list
                 kdamCourses.add(Integer.decode(helper));
                 helper = "";
-            } else {
+            } else { // if none of the above happens, we still didn't finish to read the current kdamCourse
                 helper = helper + temp;
             }
         }
@@ -98,12 +102,11 @@ public class Database {
     }
 
     /**
-     * Returns the course num, in addition removes the "courseNum|" section from courseLine.
-     *
+     * Returns next number/string in the courseLine
      * @param courseLine
-     * @return CourseNum
+     * @return String that is one of the following: courseNum, courseName, numMaxOfStudents
      */
-    private String translate(String courseLine) {
+    private String parser(String courseLine) {
         String accumulator = "";
         for (int i = 0; i < courseLine.length(); i++) {
             char temp = courseLine.charAt(i);

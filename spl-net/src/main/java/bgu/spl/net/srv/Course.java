@@ -6,7 +6,7 @@ import java.util.Map;
 public class Course {
     private int courseNum;
     private String courseName;
-    Map<Integer, Boolean> kdamCourses;
+    private Map<Integer, Boolean> kdamCourses;
     private int numOfMaxStudents;
     private int numOfRegisteredStudents;
 
@@ -19,17 +19,17 @@ public class Course {
         this.numOfRegisteredStudents = 0;
     }
 
+
+    public void addKdamCourse(int num){
+        kdamCourses.put(num, true);
+    }
+
     /**
      *  This function is called when we want to register a student.
      *  <p>
      *  !!!Note: the function assumes the student has all kdam courses!!!
-      * @returns true if successfully registered, otherwise false.
+     * @returns true if successfully registered, otherwise false.
      */
-
-    public void addKdamCourse(int num){
-        kdamCourses.put(num, false);
-    }
-
     public synchronized boolean registerStudent(){
         if (numOfRegisteredStudents < numOfMaxStudents){
             numOfRegisteredStudents++;
