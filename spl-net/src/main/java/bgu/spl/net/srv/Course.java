@@ -1,28 +1,33 @@
 package bgu.spl.net.srv;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Course {
     private int courseNum;
     private String courseName;
-    private Map<Integer, Boolean> kdamCourses;
+    //private Map<Integer, Boolean> kdamCourses;
+    private int[] kdamCourses;
     private int numOfMaxStudents;
     private int numOfRegisteredStudents;
 
 
-    public Course(int courseNum, String courseName, int numOfMaxStudents) {
+    public Course(int courseNum, String courseName, List<Integer> kdam, int numOfMaxStudents) {
         this.courseNum = courseNum;
         this.courseName = courseName;
-        this.kdamCourses = new HashMap<>();
+        this.kdamCourses = new int[kdam.size()];
+        int index = 0;
+        for (Integer id : kdam) {
+            kdamCourses[index] = id;
+            index++;
+        }
+
+        //this.kdamCourses = new HashMap<>();
         this.numOfMaxStudents = numOfMaxStudents;
         this.numOfRegisteredStudents = 0;
     }
 
-
-    public void addKdamCourse(int num){
-        kdamCourses.put(num, true);
-    }
 
     /**
      *  This function is called when we want to register a student.
@@ -46,9 +51,6 @@ public class Course {
     }
     public int getNumOfRegisteredStudents(){
         return numOfRegisteredStudents;
-    }
-    public void registereStudent(){
-        numOfRegisteredStudents++;
     }
 
 

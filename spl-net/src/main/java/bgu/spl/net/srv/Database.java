@@ -60,9 +60,7 @@ public class Database {
 
                 int max = Integer.decode(parser(courseLine)); // max students allowed to study this course concurrently
 
-                Course toAdd = new Course(courseNum, courseName, max); // Creating the course that will be added to the map
-                for (int id : kdamCourses) // registering kdamCourses
-                    toAdd.addKdamCourse(id);
+                Course toAdd = new Course(courseNum,courseName, kdamCourses, max); // Creating the course that will be added to the map
                 courses.put(courseNum, toAdd);
             }
         } catch (FileNotFoundException ex) {
