@@ -96,6 +96,9 @@ public class User {
     public boolean isAdmin(){
         return isAdmin;
     }
+    public String getUserName(){
+        return this.user;
+    }
 
 /*    public List<Integer> getListOfCourseIndexInAllCoursesArray(){
         return courseIndex;

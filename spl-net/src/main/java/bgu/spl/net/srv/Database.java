@@ -17,8 +17,8 @@ import java.util.Map;
  */
 public class Database {
 
-    Map<String, User> registeredUsers;
-    Map<Integer, Course> courses;
+    private Map<String, User> registeredUsers;
+    private Map<Integer, Course> courses;
 
 
     private static class SingletonHolder {
@@ -114,5 +114,17 @@ public class Database {
             accumulator = accumulator + temp;
         }
         return accumulator;
+    }
+
+    /**
+     *
+     * @param user we want to register
+     * @return True iff the specific user wasn't already taken, thus user was registered successfully to the database.
+     */
+    public boolean registerUser(User user){
+        if(registeredUsers.containsKey(user.getUserName()))
+            return false;
+        registeredUsers.put(user.getUserName(), user);
+        return true;
     }
 }
