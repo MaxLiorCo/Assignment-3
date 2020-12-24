@@ -36,6 +36,7 @@ public class ConnectionHandlerImp implements ConnectionHandler<String>{
             }
         } catch (IOException ex) { ex.printStackTrace(); }
     }
+    @Override
     public void close(){
         try {sock.close();}
         catch (IOException ex){
