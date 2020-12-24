@@ -1,18 +1,20 @@
-package bgu.spl.net.srv;
+package bgu.spl.net.impl.BGRSServer;
 
 import bgu.spl.net.api.MessagingProtocol;
 
 public class BGRSProtocol implements MessagingProtocol<String> {
     private Short opcode;
-    private int currParam;
+    private int msgIndex;
     private String response;
     private Database db;
+    private String[] msgArray;
 
-    public BGRSProtocol(){
+    public BGRSProtocol(Database _db){
         Short opcode = null;
-        int currParam = 0;
+        int msgIndex = 0; //opcode is first
         String response = null;
-        db = Database.getInstance();
+        db = _db;
+        msgArray = new String[3]; //Max possible message partitions
     }
     @Override
     public String process(String msg) {
@@ -42,6 +44,8 @@ public class BGRSProtocol implements MessagingProtocol<String> {
     }
 
     private String ADMINREG(){
+
+        msgIndex ++ ;
         return response;
     }
 
