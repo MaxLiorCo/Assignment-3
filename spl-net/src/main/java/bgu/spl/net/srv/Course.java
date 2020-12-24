@@ -7,8 +7,8 @@ public class Course {
     private int courseNum;
     private String courseName;
     Map<Integer, Boolean> kdamCourses;
-    int numOfMaxStudents;
-    int numOfRegisteredStudents;
+    private int numOfMaxStudents;
+    private int numOfRegisteredStudents;
 
 
     public Course(int courseNum, String courseName, int numOfMaxStudents) {
@@ -31,11 +31,24 @@ public class Course {
     }
 
     public synchronized boolean registerStudent(){
-        if (numOfMaxStudents < numOfMaxStudents){
+        if (numOfRegisteredStudents < numOfMaxStudents){
             numOfRegisteredStudents++;
             return true;
         }
         return false;
+    }
+
+    public int getCourseNum(){
+        return courseNum;
+    }
+    public int getNumOfMaxStudents(){
+        return numOfMaxStudents;
+    }
+    public int getNumOfRegisteredStudents(){
+        return numOfRegisteredStudents;
+    }
+    public void registereStudent(){
+        numOfRegisteredStudents++;
     }
 
 
