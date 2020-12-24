@@ -80,7 +80,7 @@ public class User {
             if (registered)
                 course.registerStudent(this);
             else
-                throw new Error(" no such course");
+                throw new Error("no such course");
         }
     }
 
