@@ -9,7 +9,6 @@ import java.util.Arrays;
 
 public class BGRSEncoderDecoder implements MessageEncoderDecoder<Command> {
     private byte[] bytes = new byte[1 << 10];
-    //private byte[] op_bytes = new byte[2];
     int counter = 0;
     int len = 0;
     Short op_code = null;
@@ -25,37 +24,51 @@ public class BGRSEncoderDecoder implements MessageEncoderDecoder<Command> {
 
     @Override
     public Command decodeNextByte(byte nextByte) {
-/*        if (nextByte == '\0'){ //next byte equals null
-            return popString();
-        }
-        if (counter == 1) {
+        if (nextByte == '\0') { //next byte equals null
             counter++;
-            pushByte(nextByte);
-            return popOperationId();
         }
-        pushByte(nextByte);*/
         pushByte(nextByte);
-        if (bytes.length == 2 & op_code == null){
+        if (op_code == null & bytes.length == 2)
             op_code = bytesToShort(bytes);
-        } else {
-                switch(op_code) {
-                    case 1:
-                    case 2:
-                    case 3:
-                    case 4:
-                        //return new LogoutCommand();
-                    case 5:
-                        if (len == 4){
-                            return new KDAMCHECKCommand();
-                        }
-
-                    case 6:
-                    case 7:
-                    case 8:
-                    case 9:
-                    case 10:
-                    case 11:
-                }
+        if (op_code != null) {
+            switch (op_code) {
+                case 1:
+                    if (counter == 2)
+                        return new ADMINREGCommand(popString());
+                case 2:
+                    if (counter == 2)
+                        return new STUDENTREGCommand(popString());
+                case 3:
+                    if (counter == 2)
+                        return new LOGINCommand(popString());
+                case 4:
+                    return new LOGOUTCommand();
+                case 5:
+                    if (len == 4) {
+                        return new COURSEREGCommand(popString());
+                    }
+                case 6:
+                    if (len == 4) {
+                        return new KDAMCHECKCommand(popString());
+                    }
+                case 7:
+                    if (len == 4) {
+                        return new COURSESTATCommand(popString());
+                    }
+                case 8:
+                    if (counter == 1)
+                        return new STUDENTSTATCommand(popString());
+                case 9:
+                    if (len == 4) {
+                        return new ISREGISTEREDCommand(popString());
+                    }
+                case 10:
+                    if (len == 4) {
+                        return new UNREGISTERCommand(popString());
+                    }
+                case 11:
+                    return  new MYCOURSESCommand();
+            }
         }
         return null;
     }
@@ -65,12 +78,13 @@ public class BGRSEncoderDecoder implements MessageEncoderDecoder<Command> {
         if (len == bytes.length)
             bytes = Arrays.copyOf(bytes, len * 2);
         bytes[len++] = nextByte;
-        counter++;
     }
 
     private String popString() {
         String result = new String(bytes, 2, len, StandardCharsets.UTF_8);
         len = 0;
+        op_code = null;
+        counter = 0;
         return result;
     }
 
