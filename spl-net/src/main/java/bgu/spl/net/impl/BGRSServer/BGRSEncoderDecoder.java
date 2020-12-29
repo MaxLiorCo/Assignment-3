@@ -3,24 +3,16 @@ package bgu.spl.net.impl.BGRSServer;
 import bgu.spl.net.api.MessageEncoderDecoder;
 import bgu.spl.net.impl.BGRSServer.Commands.*;
 
+import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 
-public class BGRSEncoderDecoder implements MessageEncoderDecoder<Command> {
+public class BGRSEncoderDecoder implements MessageEncoderDecoder<Serializable> {
     private byte[] bytes = new byte[1 << 10];
     int counter = 0;
     int len = 0;
     Short op_code = null;
-
-    /**
-     * Decodes the message sent by user.
-     * After 2 iterations, will return a string represents operation ID was requested by user.
-     * (Assuming operation ID is represented in 2 bytes).
-     * After that will decode (if necessary) the next bytes.
-     * @param nextByte the next byte to consider for the currently decoded message.
-     * @return String if finished, or NULL otherwise.
-     */
 
     @Override
     public Command decodeNextByte(byte nextByte) {
@@ -42,6 +34,7 @@ public class BGRSEncoderDecoder implements MessageEncoderDecoder<Command> {
                     if (counter == 2)
                         return new LOGINCommand(popString());
                 case 4:
+                    reset();
                     return new LOGOUTCommand();
                 case 5:
                     if (len == 4) {
@@ -67,6 +60,7 @@ public class BGRSEncoderDecoder implements MessageEncoderDecoder<Command> {
                         return new UNREGISTERCommand(popString());
                     }
                 case 11:
+                    reset();
                     return  new MYCOURSESCommand();
             }
         }
@@ -82,9 +76,7 @@ public class BGRSEncoderDecoder implements MessageEncoderDecoder<Command> {
 
     private String popString() {
         String result = new String(bytes, 2, len, StandardCharsets.UTF_8);
-        len = 0;
-        op_code = null;
-        counter = 0;
+        reset();
         return result;
     }
 
@@ -95,8 +87,9 @@ public class BGRSEncoderDecoder implements MessageEncoderDecoder<Command> {
      * @return Array of bytes represent the message.
      */
     @Override
-    public byte[] encode(Command message) {
-        return null;
+    public byte[] encode(Serializable message) {
+        String toEncode = (String)message;
+        return toEncode.getBytes(StandardCharsets.UTF_8);
     }
 
     private short bytesToShort(byte[] byteArr)
@@ -104,5 +97,11 @@ public class BGRSEncoderDecoder implements MessageEncoderDecoder<Command> {
         short result = (short)((byteArr[0] & 0xff) << 8);
         result += (short)(byteArr[1] & 0xff);
         return result;
+    }
+
+    private void reset(){
+        len = 0;
+        op_code = null;
+        counter = 0;
     }
 }
