@@ -1,7 +1,7 @@
 package bgu.spl.net.impl.BGRSServer;
 
 import bgu.spl.net.api.MessageEncoderDecoder;
-import bgu.spl.net.impl.BGRSServer.Commands.KdamCheckCommand;
+import bgu.spl.net.impl.BGRSServer.Commands.*;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
@@ -46,7 +46,7 @@ public class BGRSEncoderDecoder implements MessageEncoderDecoder<Command> {
                         //return new LogoutCommand();
                     case 5:
                         if (len == 4){
-                            return new KdamCheckCommand();
+                            return new KDAMCHECKCommand();
                         }
 
                     case 6:
