@@ -2,8 +2,28 @@ package bgu.spl.net.impl.BGRSServer;
 
 import bgu.spl.net.api.MessagingProtocol;
 
-public class BGRSProtocol implements MessagingProtocol<String> {
-    private Short opcode;
+import java.io.Serializable;
+
+
+public class BGRSProtocol<T> implements MessagingProtocol<Serializable> {
+
+    //T will be Database
+    private T arg;
+
+    public BGRSProtocol(T arg) {
+        this.arg = arg;
+    }
+
+    @Override
+    public Serializable process(Serializable msg) {
+        return ((Command) msg).execute(arg);
+    }
+
+    @Override
+    public boolean shouldTerminate() {
+        return false; // is taken care of by reactor
+    }
+    /*   private Short opcode;
     private int msgIndex;
     private String response;
     private Database db;
@@ -17,7 +37,7 @@ public class BGRSProtocol implements MessagingProtocol<String> {
         msgArray = new String[3]; //Max possible message partitions
     }
     @Override
-    public String process(String msg) {
+    public String process(Command msg) {
 
         //beginning new request from client
         if( opcode == null){
@@ -51,9 +71,6 @@ public class BGRSProtocol implements MessagingProtocol<String> {
 
     private String STUDENTREG(){
         return response;
-    }
-    @Override
-    public boolean shouldTerminate() {
-        return false; // TODO: change
-    }
+    }*/
+
 }
