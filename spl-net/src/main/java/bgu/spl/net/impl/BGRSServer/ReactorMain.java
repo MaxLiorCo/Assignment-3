@@ -6,7 +6,8 @@ import bgu.spl.net.srv.Server;
 
 public class ReactorMain {
     public static void main(String[] args) {
-        Database db = Database.getInstance(); //one shared object
+        Database db = Database.getInstance();//one shared object
+        db.initialize("/Courses.txt"); //TODO how to actually initialize
 
         Server.reactor(
                 Runtime.getRuntime().availableProcessors(),

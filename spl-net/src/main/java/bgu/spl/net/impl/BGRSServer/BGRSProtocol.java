@@ -9,9 +9,11 @@ public class BGRSProtocol<T> implements MessagingProtocol<Serializable> {
 
     //T will be Database
     private T arg;
+    private User user;
 
     public BGRSProtocol(T arg) {
         this.arg = arg;
+        user = null;
     }
 
     @Override
@@ -21,8 +23,10 @@ public class BGRSProtocol<T> implements MessagingProtocol<Serializable> {
 
     @Override
     public boolean shouldTerminate() {
-        return false; // is taken care of by reactor
+        return false; // TODO this
     }
+
+    public User getUser(){ return user;}
     /*   private Short opcode;
     private int msgIndex;
     private String response;
