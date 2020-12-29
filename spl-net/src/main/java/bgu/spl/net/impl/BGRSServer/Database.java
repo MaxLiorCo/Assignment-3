@@ -125,6 +125,6 @@ public class Database {
         if(registeredUsers.containsKey(user.getUserName()))
             return false;
         registeredUsers.put(user.getUserName(), user);
-        return true;
+            return true;
     }
 }
