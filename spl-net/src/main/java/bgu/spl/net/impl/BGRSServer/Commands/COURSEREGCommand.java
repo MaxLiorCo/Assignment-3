@@ -6,6 +6,11 @@ import bgu.spl.net.impl.BGRSServer.Database;
 import java.io.Serializable;
 
 public class COURSEREGCommand  implements Command<Database> {
+    String message;
+    public COURSEREGCommand(String _message){
+        message = _message;
+
+    }
     @Override
     public Serializable execute(Database db) {
         return null;
