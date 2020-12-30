@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class ERRMessage {
     public Serializable sendERR(String commandOpCode){
-
-        return null;
+        String result = "13" + commandOpCode;
+        return  result; //UTF-16 by default
     }
 }
