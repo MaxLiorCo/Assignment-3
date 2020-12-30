@@ -18,7 +18,7 @@ public class BGRSProtocol<T> implements MessagingProtocol<Serializable> {
 
     @Override
     public Serializable process(Serializable msg) {
-        return ((Command) msg).execute(arg);
+        return ((Command) msg).execute(this);
     }
 
     @Override
