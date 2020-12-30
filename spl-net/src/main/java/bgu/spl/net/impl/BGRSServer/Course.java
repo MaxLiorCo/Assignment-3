@@ -8,7 +8,7 @@ public class Course {
     private int[] kdamCourses;
     private int numOfMaxStudents;
     private int numOfRegisteredStudents;
-    private List<User> registeredStudentList;
+    private List<String> registeredStudentList;
 
 
     public Course(int courseNum, String courseName, List<Integer> kdam, int numOfMaxStudents) {
@@ -30,14 +30,16 @@ public class Course {
      *  This function is called when we want to register a student.
      * @throws Error exception upon failed registration attempt.
      */
-    public synchronized boolean registerStudent(User student) throws Error { //TODO synchronized may be unnecessary
-        if (numOfRegisteredStudents < numOfMaxStudents && assertKdam(student.getRegisteredCoursesArray())){
-            registeredStudentList.add(student);
-            numOfRegisteredStudents++;
-            return true;
-        }
-        else
-            throw new Error("No place left in this course");
+    public synchronized void registerStudent(User student) throws Error {
+        if (assertKdam(student.getRegisteredCoursesArray()))
+            synchronized (this) { //synchronized is necessary in situations where 2 different students try to register to the same course
+                if (numOfRegisteredStudents < numOfMaxStudents) {
+                    registeredStudentList.add(student.getUserName());
+                    numOfRegisteredStudents++;
+                    return;
+                }
+            }
+        throw new Error("No place left in this course");
     }
 
     private boolean assertKdam(Integer[] registeredCoursesArray) throws Error{
@@ -45,6 +47,7 @@ public class Course {
             throw new Error("Haven't done all kdam courses needed for this course");
         return true;
     }
+
 
     public int getCourseNum(){
         return courseNum;
@@ -55,7 +58,17 @@ public class Course {
     public int getNumOfRegisteredStudents(){
         return numOfRegisteredStudents;
     }
-
-
+    public int[] getKdamCourses() {
+        return kdamCourses;
+    }
+    public String getCourseName() {
+        return courseName;
+    }
+    public List<String> getRegisteredStudentList() {
+        return registeredStudentList;
+    }
+    public boolean removeStudent(String username){
+        return registeredStudentList.remove(username);
+    }
 
 }

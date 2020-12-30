@@ -10,10 +10,12 @@ public class BGRSProtocol<Database> implements MessagingProtocol<Serializable> {
     //T will be Database
     private Database arg;
     private User user;
+    private boolean terminate;
 
     public BGRSProtocol(Database arg) {
         this.arg = arg;
         user = null;
+        terminate = false;
     }
 
     @Override
@@ -23,7 +25,10 @@ public class BGRSProtocol<Database> implements MessagingProtocol<Serializable> {
 
     @Override
     public boolean shouldTerminate() {
-        return false; // TODO this
+        return terminate;
+    }
+    public void setTerminate(boolean terminate) {
+        this.terminate = terminate;
     }
 
     public User getUser(){

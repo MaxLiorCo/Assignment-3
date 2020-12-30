@@ -7,28 +7,29 @@ import bgu.spl.net.impl.BGRSServer.User;
 
 import java.io.Serializable;
 
-public class ADMINREGCommand implements Command<BGRSProtocol> {
+public class ADMINREGCommand implements Command<BGRSProtocol<?>> {
     String message;
 
-    public ADMINREGCommand(String _message){
+    public ADMINREGCommand(String _message) {
         message = _message;
     }
 
     /**
      * Registers client as Admin.
      * @param protocol
-     * @return ACKMessage apuon successfull registeration, false if user is already taken.
+     * @return ACKMessage upon successful registration, ERRMessage if user is already taken, or client
+     * have already logged in to a user.
      */
     @Override
-    public Serializable execute(BGRSProtocol protocol) {
-        String userName = "";
-        String password = "";
-        int ind = message.indexOf('\0');
-        userName = message.substring(0, ind);
-        password = message.substring(ind + 1, message.length() - 1);
-     // boolean wasRegistered = db.registerUser(new User(userName, password, true));
+    public Serializable execute(BGRSProtocol<?> protocol) {
+        Database db = Database.getInstance();
+        if (protocol.getUser() != null)
+            return new ERRMessage().sendERR("1");
+        String userName = getUserName(message);
+        String password = getPassword(message);
+        boolean wasRegistered = db.registerUser(new User(userName, password, true));
         if (wasRegistered)
-           return new ACKMessage().sendACK("1", "Registered successfully");
+            return new ACKMessage().sendACK("1", "");
         else
             return new ERRMessage().sendERR("1");
     }
