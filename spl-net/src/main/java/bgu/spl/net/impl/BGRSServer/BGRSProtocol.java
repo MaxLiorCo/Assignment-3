@@ -5,20 +5,20 @@ import bgu.spl.net.api.MessagingProtocol;
 import java.io.Serializable;
 
 
-public class BGRSProtocol<T> implements MessagingProtocol<Serializable> {
+public class BGRSProtocol<Database> implements MessagingProtocol<Serializable> {
 
     //T will be Database
-    private T arg;
+    private Database arg;
     private User user;
 
-    public BGRSProtocol(T arg) {
+    public BGRSProtocol(Database arg) {
         this.arg = arg;
         user = null;
     }
 
     @Override
     public Serializable process(Serializable msg) {
-        return ((Command) msg).execute(arg);
+        return ((Command) msg).execute(this);
     }
 
     @Override
@@ -26,7 +26,12 @@ public class BGRSProtocol<T> implements MessagingProtocol<Serializable> {
         return false; // TODO this
     }
 
-    public User getUser(){ return user;}
+    public User getUser(){
+        return user;
+    }
+    public void setUser(User user) {
+        this.user = user;
+    }
     /*   private Short opcode;
     private int msgIndex;
     private String response;
