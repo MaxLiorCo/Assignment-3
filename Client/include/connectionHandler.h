@@ -44,6 +44,9 @@ public:
     // Send a message to the remote host.
     // Returns false in case connection is closed before all the data is sent.
     bool sendFrameAscii(const std::string& frame, char delimiter);
+
+    //TODO my code below make sure to remove excess later
+    bool sendFrameAscii(const std::string& frame);
 	
     // Close down the connection properly.
     void close();

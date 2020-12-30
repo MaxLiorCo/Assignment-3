@@ -98,6 +98,10 @@ bool ConnectionHandler::sendFrameAscii(const std::string& frame, char delimiter)
 	if(!result) return false;
 	return sendBytes(&delimiter,1);
 }
+//TODO my code below make sure to remove excess code later
+bool ConnectionHandler::sendFrameAscii(const std::string& frame) {
+    return sendBytes(frame.c_str(),frame.length());
+}
  
 // Close down the connection properly.
 void ConnectionHandler::close() {
