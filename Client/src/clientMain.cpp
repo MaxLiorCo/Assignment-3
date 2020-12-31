@@ -4,10 +4,6 @@
 
 using namespace std;
 
-
-string encode(std::string &line , int len);
-void shortToBytes(short num, char* bytesArr);
-
 int main(int argc, char *argv[]) {
 
     if (argc < 3) {
@@ -33,7 +29,7 @@ int main(int argc, char *argv[]) {
         int len=line.length();
 
 
-        string toBytes = encode(line , len);
+        string toBytes = encdec::encode(line , len);
         //
         //TODO convert line to required byte array and length
         if (!connectionHandler.sendBytes( toBytes.c_str() , toBytes.length())) {
@@ -44,18 +40,15 @@ int main(int argc, char *argv[]) {
         std::cout << "Sent " <<  toBytes.length() << " bytes to server" << std::endl;
 
 
-        // We can use one of three options to read data from the server:
-        // 1. Read a fixed number of characters
-        // 2. Read a line (up to the newline character using the getline() buffered reader
-        // 3. Read up to the null character
-        std::string answer;
+
+        char answer[2];
         // Get back an answer: by using the expected number of bytes (len bytes + newline delimiter)
         // We could also use: connectionHandler.getline(answer) and then get the answer without the newline char at the end
-        if (!connectionHandler.getLine(answer)) {
+        if (!connectionHandler.getBytes(answer, 2)) {
             std::cout << "Disconnected. Exiting...\n" << std::endl;
             break;
         }
-
+/*
         len=answer.length();
         // A C string must end with a 0 char delimiter.  When we filled the answer buffer from the socket
         // we filled up to the \n char - we must make sure now that a 0 char is also present. So we truncate last character.
@@ -64,7 +57,7 @@ int main(int argc, char *argv[]) {
         if (answer == "bye") {
             std::cout << "Exiting...\n" << std::endl;
             break;
-        }
+        }*/
     }
     cout << "got out of loop" <<endl;
 
@@ -74,7 +67,7 @@ int main(int argc, char *argv[]) {
 
 /*
 
-string encode(std::string line , int len){
+string encode(std::string linee , int len){
     int nextSpace = line.find(" ");
     string command = line.substr(0, nextSpace); //Command
     string result = "";
