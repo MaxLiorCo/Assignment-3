@@ -17,6 +17,7 @@ public:
     }
 };*/
 
+void test();
 int main(int argc, char *argv[]) {
 
     if (argc < 3) {
@@ -25,6 +26,8 @@ int main(int argc, char *argv[]) {
     }
     std::string host = argv[1];
     short port = atoi(argv[2]);
+
+    test();
 
     ConnectionHandler connectionHandler(host, port);
     if (!connectionHandler.connect()) {
@@ -44,7 +47,7 @@ int main(int argc, char *argv[]) {
         int len=line.length();
 
 
-        std::string toBytes = encdec::encode(line , len);
+        std::string toBytes = encdec::encode(line);
         //
         //TODO convert line to required byte array and length
         if (!connectionHandler.sendBytes( toBytes.c_str() , toBytes.length())) {
@@ -63,19 +66,25 @@ int main(int argc, char *argv[]) {
             std::cout << "Disconnected. Exiting...\n" << std::endl;
             break;
         }
-/*        std::string answer = encdec::decode(replyOpCode);
+        /*std::string answer = encdec::decode(replyOpCode);
 
         std::cout << "Reply: " << answer << " " << len << " bytes " << std::endl << std::endl;
         if (answer == "bye") {
             std::cout << "Exiting...\n" << std::endl;
             break;
-        }*/
+        }
+         */
     }
     std::cout << "got out of loop" << std::endl;
 
     return 0;
 }
 
+void test(){
+    std::string command = "ADMINREG lior 123";
+    std::string s = encdec::encode(command);
+    int len = s.length();
+}
 
 /*
 

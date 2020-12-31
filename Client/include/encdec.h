@@ -10,7 +10,7 @@ private:
     static void shortToBytes(short num, char* bytesArr);
     static short bytesToShort(char* bytesArr);
 public:
-    static std::string encode(std::string &line , int len);
+    static std::string encode(std::string &line);
     static std::string decode(char replyOpCode[]);
 };
 

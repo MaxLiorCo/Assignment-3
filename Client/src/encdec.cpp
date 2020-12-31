@@ -20,7 +20,7 @@ short encdec::bytesToShort(char* bytesArr)
     return result;
 }
 
-string encdec::encode(std::string &line, int len) {
+string encdec::encode(std::string &line) {
     int nextSpace = line.find(" ");
     string command = line.substr(0, nextSpace); //Command
     string result = "";
@@ -28,49 +28,49 @@ string encdec::encode(std::string &line, int len) {
     //TODO do not forget to transfer to short first otherfwise input like "365" will be 3 bytes
     if(command == "ADMINREG"){
         shortToBytes(1,shortBytes);
-        result = result.append(shortBytes); //opCode to make sure it takes 2 bytes in string
+        result.append(shortBytes, 2); //opCode to make sure it takes 2 bytes in string
         int currSpace = nextSpace;
         nextSpace = line.find(" ",nextSpace + 1);
-        result.append(line.substr(currSpace+1,nextSpace)); // append Username
-        command.append("\0");
+        result.append(line.substr(currSpace+1,nextSpace-currSpace-1)); // append Username
+        result.append("\0",1);
         result.append(line.substr(nextSpace + 1)); // append Password
-        command.append("\0");
+        result.append("\0",1);
     }
     else if(command == "STUDENTREG"){
         shortToBytes(2,shortBytes);
-        result.append(shortBytes); //opCode to make sure it takes 2 bytes in string
+        result.append(shortBytes, 2); //opCode to make sure it takes 2 bytes in string
         int currSpace = nextSpace;
         nextSpace = line.find(" ",nextSpace + 1);
-        result.append(line.substr(currSpace+1,nextSpace)); // append Username
-        command.append("\0");
+        result.append(line.substr(currSpace+1,nextSpace-currSpace-1)); // append Username
+        result.append("\0",1);
         result.append(line.substr(nextSpace + 1)); // append Password
-        command.append("\0");
+        result.append("\0",1);
     }
     else if(command == "LOGIN"){
         shortToBytes(3,shortBytes);
-        result.append(shortBytes); //opCode to make sure it takes 2 bytes in string
+        result.append(shortBytes, 2); //opCode to make sure it takes 2 bytes in string
         int currSpace = nextSpace;
         nextSpace = line.find(" ",nextSpace + 1);
-        result.append(line.substr(currSpace+1,nextSpace)); // append Username
-        command.append("\0");
+        result.append(line.substr(currSpace+1,nextSpace-currSpace-1)); // append Username
+        result.append("\0",1);
         result.append(line.substr(nextSpace + 1)); // append Password
-        command.append("\0");
+        result.append("\0",1);
     }
     else if(command == "LOGOUT"){
         shortToBytes(4,shortBytes);
-        result.append(shortBytes); //opCode to make sure it takes 2 bytes in string
+        result.append(shortBytes, 2); //opCode to make sure it takes 2 bytes in string
     }
     else if(command == "COURSEREG"){
         shortToBytes(5,shortBytes);
-        result.append(shortBytes); //opCode to make sure it takes 2 bytes in string
+        result.append(shortBytes, 2); //opCode to make sure it takes 2 bytes in string
     }
     else if(command == "KDAMCHECK"){
         shortToBytes(6,shortBytes);
-        result.append(shortBytes); //opCode to make sure it takes 2 bytes in string
+        result.append(shortBytes, 2); //opCode to make sure it takes 2 bytes in string
     }
     else if(command == "COURSESTAT"){
         shortToBytes(7,shortBytes);
-        result.append(shortBytes); //opCode to make sure it takes 2 bytes in string
+        result.append(shortBytes, 2); //opCode to make sure it takes 2 bytes in string
     }
     else if(command == "STUDENTSTAT"){
         shortToBytes(8,shortBytes);
@@ -93,6 +93,7 @@ string encdec::encode(std::string &line, int len) {
     else
         cerr << "invalid command" << endl;
 
+    //NOTICE: debugger dosent show last "\0" but it is included in the string length
     return result;
 }
 
