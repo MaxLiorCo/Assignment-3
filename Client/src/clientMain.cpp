@@ -27,7 +27,7 @@ int main(int argc, char *argv[]) {
     std::string host = argv[1];
     short port = atoi(argv[2]);
 
-    test();
+  //  test();
 
     ConnectionHandler connectionHandler(host, port);
     if (!connectionHandler.connect()) {

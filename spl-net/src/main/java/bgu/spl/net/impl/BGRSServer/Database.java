@@ -19,7 +19,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class Database {
 
     private Map<String, User> registeredUsers;
-    private Map<Integer, Course> courses;
+    private Map<Short, Course> courses;
 
 
     private static class SingletonHolder {
@@ -50,7 +50,7 @@ public class Database {
             User.initializeCourseArray(coursesFilePath); //the weird sorted by file, array of courses user has registered to
             String courseLine;
             while ((courseLine = br.readLine()) != null) {
-                int courseNum = Integer.decode(parser(courseLine)); // course ID
+                short courseNum = Short.decode(parser(courseLine)); // course ID
                 courseLine = courseLine.substring(courseLine.indexOf('|') + 1);
 
                 String courseName = parser(courseLine); // course name
@@ -132,7 +132,7 @@ public class Database {
         return registeredUsers;
     }
 
-    public Map<Integer, Course> getCourses() {
+    public Map<Short, Course> getCourses() {
         return courses;
     }
 }

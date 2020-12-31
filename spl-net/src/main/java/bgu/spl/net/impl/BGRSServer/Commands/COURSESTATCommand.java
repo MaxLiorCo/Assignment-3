@@ -8,10 +8,10 @@ import java.util.Collections;
 import java.util.List;
 
 public class COURSESTATCommand implements Command<BGRSProtocol<?>> {
-    String message;
+    short courseNum;
 
-    public COURSESTATCommand(String _message) {
-        message = _message;
+    public COURSESTATCommand(short courseNum) {
+        this.courseNum = courseNum;
 
     }
 
@@ -21,7 +21,7 @@ public class COURSESTATCommand implements Command<BGRSProtocol<?>> {
         if (user == null || !user.isAdmin())
             return new ERRMessage().sendERR("7");
         Database db = Database.getInstance();
-        Course course = db.getCourses().get(Integer.decode(message));
+        Course course = db.getCourses().get(courseNum);
         if (course == null) // such course doesn't exist
             return new ERRMessage().sendERR("7");
         String courseData = "";
@@ -35,6 +35,7 @@ public class COURSESTATCommand implements Command<BGRSProtocol<?>> {
         courseData += "Course: (" + course.getCourseNum() + ") " + course.getCourseName() + "\n";
         courseData += "Seats Available: " + numOfRegistered + "/" + totalSeats + "\n";
         courseData += "Students Registered: " + arrToString + "\n";
+        System.out.println(courseData); //TODO
         return new ACKMessage().sendACK("7", courseData);
 
 

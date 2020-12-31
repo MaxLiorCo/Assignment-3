@@ -5,10 +5,10 @@ import bgu.spl.net.impl.BGRSServer.*;
 import java.io.Serializable;
 
 public class COURSEREGCommand implements Command<BGRSProtocol<?>> {
-    String message;
+    short courseNum;
 
-    public COURSEREGCommand(String _message) {
-        message = _message;
+    public COURSEREGCommand(short courseNum) {
+        this.courseNum = courseNum;
 
     }
 
@@ -18,7 +18,6 @@ public class COURSEREGCommand implements Command<BGRSProtocol<?>> {
         User user = protocol.getUser();
         if (user == null || user.isAdmin()) // client didn't login or user is admin thus cannot do this command
             return new ERRMessage().sendERR("5");
-        int courseNum = getCourseNum(message);
         Course course = db.getCourses().get(courseNum);
         if (course == null) // such course doesn't exist
             return new ERRMessage().sendERR("5");
