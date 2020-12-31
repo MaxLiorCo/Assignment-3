@@ -7,11 +7,7 @@ import java.nio.charset.StandardCharsets;
 
 //TODO remove static
 public class ACKMessage {
-    public static void main(String [] args){
-        Serializable s = sendACK("7", "PLEASE");
-
-    }
-    static Serializable sendACK(String commandOpCode, String printMessage){
+    Serializable sendACK(String commandOpCode, String printMessage){
         byte[] stringMessage = printMessage.getBytes(StandardCharsets.UTF_8);
         byte [] result = new byte[4+stringMessage.length + 1];
         byte[] twoByte = shortToBytes((short)13);
@@ -26,7 +22,7 @@ public class ACKMessage {
         result[result.length-1] = '\0';
         return  result;
     }
-    static byte[] shortToBytes(short num)
+    byte[] shortToBytes(short num)
     {
         byte[] bytesArr = new byte[2];
         bytesArr[0] = (byte)((num >> 8) & 0xFF);
