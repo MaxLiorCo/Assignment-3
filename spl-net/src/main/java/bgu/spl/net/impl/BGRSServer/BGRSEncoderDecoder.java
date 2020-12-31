@@ -107,8 +107,7 @@ public class BGRSEncoderDecoder implements MessageEncoderDecoder<Serializable> {
      */
     @Override
     public byte[] encode(Serializable message) {
-        String toEncode = (String)message;
-        return toEncode.getBytes(StandardCharsets.UTF_8);
+        return (byte[])message;
     }
 
     private short bytesToShort(byte[] byteArr)
