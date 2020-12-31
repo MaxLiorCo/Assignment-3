@@ -63,32 +63,48 @@ string encdec::encode(std::string &line) {
     else if(command == "COURSEREG"){
         shortToBytes(5,shortBytes);
         result.append(shortBytes, 2); //opCode to make sure it takes 2 bytes in string
+        string course = line.substr(nextSpace+1);
+        shortToBytes(atoi( course.c_str() ),shortBytes);
+        result.append(shortBytes, 2); // course number encoded in 2 bytes
+
     }
     else if(command == "KDAMCHECK"){
         shortToBytes(6,shortBytes);
         result.append(shortBytes, 2); //opCode to make sure it takes 2 bytes in string
+        string course = line.substr(nextSpace+1);
+        shortToBytes(atoi( course.c_str() ),shortBytes);
+        result.append(shortBytes, 2); // course number encoded in 2 bytes
     }
     else if(command == "COURSESTAT"){
         shortToBytes(7,shortBytes);
         result.append(shortBytes, 2); //opCode to make sure it takes 2 bytes in string
+        string course = line.substr(nextSpace+1);
+        shortToBytes(atoi( course.c_str() ),shortBytes);
+        result.append(shortBytes, 2); // course number encoded in 2 bytes
     }
     else if(command == "STUDENTSTAT"){
         shortToBytes(8,shortBytes);
-        result.append(shortBytes); //opCode to make sure it takes 2 bytes in string
+        result.append(shortBytes, 2); //opCode to make sure it takes 2 bytes in string
         result.append(line.substr(nextSpace+1)); // append Username
         command.append("\0");
     }
     else if(command == "ISREGISTERED"){
         shortToBytes(9,shortBytes);
-        result.append(shortBytes); //opCode to make sure it takes 2 bytes in string
+        result.append(shortBytes, 2); //opCode to make sure it takes 2 bytes in string
+        string course = line.substr(nextSpace+1);
+        shortToBytes(atoi( course.c_str() ),shortBytes);
+        result.append(shortBytes, 2); // course number encoded in 2 bytes
     }
     else if(command == "UNREGISTER"){
         shortToBytes(10,shortBytes);
-        result.append(shortBytes); //opCode to make sure it takes 2 bytes in string
+        result.append(shortBytes, 2); //opCode to make sure it takes 2 bytes in string
+        string course = line.substr(nextSpace+1);
+        shortToBytes(atoi( course.c_str() ),shortBytes);
+        result.append(shortBytes, 2); // course number encoded in 2 bytes
     }
     else if(command == "MYCOURSES"){
         shortToBytes(11,shortBytes);
-        result.append(shortBytes); //opCode to make sure it takes 2 bytes in string
+        result.append(shortBytes, 2); //opCode to make sure it takes 2 bytes in string
     }
     else
         cerr << "invalid command" << endl;

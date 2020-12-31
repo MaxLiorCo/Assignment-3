@@ -81,7 +81,7 @@ int main(int argc, char *argv[]) {
 }
 
 void test(){
-    std::string command = "ADMINREG lior 123";
+    std::string command = "UNREGISTER 127";
     std::string s = encdec::encode(command);
     int len = s.length();
 }
