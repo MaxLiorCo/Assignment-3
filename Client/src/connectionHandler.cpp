@@ -71,7 +71,7 @@ bool ConnectionHandler::sendBytes(const char bytes[], int bytesToWrite) {
 bool ConnectionHandler::sendLine(std::string& line) {
     return sendFrameAscii(line, '\n');
 }
-
+*/
 
 bool ConnectionHandler::getFrameAscii(std::string& frame, char delimiter) {
     char ch;
@@ -93,12 +93,14 @@ bool ConnectionHandler::getFrameAscii(std::string& frame, char delimiter) {
     return true;
 }
 
+/*
 
 bool ConnectionHandler::sendFrameAscii(const std::string& frame, char delimiter) {
 	bool result=sendBytes(frame.c_str(),frame.length());
 	if(!result) return false;
 	return sendBytes(&delimiter,1);
-}*/
+}
+*/
 
 //TODO my code below make sure to remove excess code later
 bool ConnectionHandler::sendFrameAscii(const std::string& frame) {

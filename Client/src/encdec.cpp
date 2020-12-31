@@ -113,4 +113,7 @@ string encdec::encode(std::string &line) {
     return result;
 }
 
-string decode(char replyOpCode[]) {return nullptr;}
+short encdec::decodeTwoBytes(char replyOpCode[]) {
+    return bytesToShort(replyOpCode);
+}
+

@@ -1,6 +1,7 @@
 #include <iostream>
 #include <connectionHandler.h>
 #include <encdec.h>
+#include <bitset>
 
 using namespace std;
 
@@ -37,9 +38,9 @@ int main(int argc, char *argv[]) {
     else
         std::cout << "Connection established to: " << host << ":" << port << std::endl;
 
-
+    bool session = true;
     //From here we will see the rest of the BGRS client implementation:
-    while (1) {
+    while (session) {
         const short bufsize = 1024;
         char buf[bufsize];
         std::cin.getline(buf, bufsize);
@@ -59,21 +60,42 @@ int main(int argc, char *argv[]) {
 
 
 
-        char replyOpCode[2];
+        char opCodeArr[2];
+        char messageOpCodeArr[2];
         // Get back an answer: by using the expected number of bytes (len bytes + newline delimiter)
         // We could also use: connectionHandler.getline(answer) and then get the answer without the newline char at the end
-        if (!connectionHandler.getBytes(replyOpCode, 2)) {
+        if (!connectionHandler.getBytes(opCodeArr, 2)) {
             std::cout << "Disconnected. Exiting...\n" << std::endl;
             break;
         }
-        /*std::string answer = encdec::decode(replyOpCode);
-
-        std::cout << "Reply: " << answer << " " << len << " bytes " << std::endl << std::endl;
-        if (answer == "bye") {
-            std::cout << "Exiting...\n" << std::endl;
+        if (!connectionHandler.getBytes(messageOpCodeArr, 2)) {
+            std::cout << "Disconnected. Exiting...\n" << std::endl;
             break;
         }
-         */
+        short opCode = encdec::decodeTwoBytes(opCodeArr);
+        short opCodeMessage = encdec::decodeTwoBytes(messageOpCodeArr);
+        if(opCode == 12){
+            cout << "ACK " << opCodeMessage << endl;
+            char buffer[bufsize];
+            std::string str(buffer);
+            if(opCodeMessage == 4) //Logout
+                session = false;
+            else if(true){ //TODO decide which opCodeMessages return additional strings (if required to do so)
+                if (!connectionHandler.getFrameAscii(str, '\0')) {
+                    std::cout << "Disconnected. Exiting...\n" << std::endl;
+                    break;
+                }
+                cout << str << endl;
+            }
+        }
+        else if(opCode == 13){
+            cout << "ERR " << opCodeMessage << endl;
+        }
+        else
+            cout << "Incorrect OpCode returned" << endl;
+
+
+
     }
     std::cout << "got out of loop" << std::endl;
 
@@ -81,8 +103,11 @@ int main(int argc, char *argv[]) {
 }
 
 void test(){
-    std::string command = "UNREGISTER 127";
+    std::string command = "UNREGISTER 400";
     std::string s = encdec::encode(command);
+    const char* c = s.c_str();
+    std::bitset<8> x(c[3]);
+    cout << x << endl;  //prints bits of char/byte in string in place 3
     int len = s.length();
 }
 
