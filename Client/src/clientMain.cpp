@@ -2,7 +2,6 @@
 #include <connectionHandler.h>
 #include "encdec.h"
 
-using namespace std;
 
 int main(int argc, char *argv[]) {
 
@@ -29,7 +28,7 @@ int main(int argc, char *argv[]) {
         int len=line.length();
 
 
-        string toBytes = encdec::encode(line , len);
+        std::string toBytes = encdec::encode(line , len);
         //
         //TODO convert line to required byte array and length
         if (!connectionHandler.sendBytes( toBytes.c_str() , toBytes.length())) {
@@ -41,29 +40,25 @@ int main(int argc, char *argv[]) {
 
 
 
-        char answer[2];
+        char replyOpCode[2];
         // Get back an answer: by using the expected number of bytes (len bytes + newline delimiter)
         // We could also use: connectionHandler.getline(answer) and then get the answer without the newline char at the end
-        if (!connectionHandler.getBytes(answer, 2)) {
+        if (!connectionHandler.getBytes(replyOpCode, 2)) {
             std::cout << "Disconnected. Exiting...\n" << std::endl;
             break;
         }
-/*
-        len=answer.length();
-        // A C string must end with a 0 char delimiter.  When we filled the answer buffer from the socket
-        // we filled up to the \n char - we must make sure now that a 0 char is also present. So we truncate last character.
-        answer.resize(len-1);
+        std::string answer = encdec::decode(replyOpCode);
+
         std::cout << "Reply: " << answer << " " << len << " bytes " << std::endl << std::endl;
         if (answer == "bye") {
             std::cout << "Exiting...\n" << std::endl;
             break;
-        }*/
+        }
     }
-    cout << "got out of loop" <<endl;
+    std::cout << "got out of loop" << std::endl;
 
     return 0;
 }
-
 
 /*
 
@@ -72,7 +67,7 @@ string encode(std::string linee , int len){
     string command = line.substr(0, nextSpace); //Command
     string result = "";
     char shortBytes[2];
-    //TODO do not forget to transfer to short first otherfwise input like "365" will be 3 bytes
+
     if(command.compare("ADMINREG")){
         shortToBytes(1,shortBytes);
         result.append(shortBytes); //opCode to make sure it takes 2 bytes in string
