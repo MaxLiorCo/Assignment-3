@@ -1,12 +1,16 @@
 #include <iostream>
 #include <connectionHandler.h>
-#include "encdec.h"
-
 using namespace std;
 
 
-string encode(std::string &line , int len);
-void shortToBytes(short num, char* bytesArr);
+
+class KeyboardListener {
+    private:
+        int _id;
+        std::mutex& _mutex;
+
+
+};
 
 int main(int argc, char *argv[]) {
 
@@ -22,6 +26,8 @@ int main(int argc, char *argv[]) {
         std::cerr << "Cannot connect to " << host << ":" << port << std::endl;
         return 1;
     }
+    else
+        std::cout << "Connection established to: " << host << ":" << port << std::endl;
 
 
     //From here we will see the rest of the BGRS client implementation:
@@ -30,9 +36,10 @@ int main(int argc, char *argv[]) {
         char buf[bufsize];
         std::cin.getline(buf, bufsize);
         std::string line(buf);
-        int len=line.length();
+        int len = line.length();
+        return 0;
 
-
+/*
         string toBytes = encode(line , len);
         //
         //TODO convert line to required byte array and length
@@ -68,6 +75,9 @@ int main(int argc, char *argv[]) {
     }
     cout << "got out of loop" <<endl;
 
+    return 0;*/
+
+    }
     return 0;
 }
 
