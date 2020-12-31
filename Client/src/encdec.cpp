@@ -5,6 +5,19 @@
 
 using namespace std;
 
+void encdec::shortToBytes(short num, char* bytesArr)
+{
+    bytesArr[0] = ((num >> 8) & 0xFF);
+    bytesArr[1] = (num & 0xFF);
+}
+
+short encdec::bytesToShort(char* bytesArr)
+{
+    short result = (short)((bytesArr[0] & 0xff) << 8);
+    result += (short)(bytesArr[1] & 0xff);
+    return result;
+}
+
 string encdec::encode(std::string &line, int len) {
     int nextSpace = line.find(" ");
     string command = line.substr(0, nextSpace); //Command
@@ -82,15 +95,3 @@ string encdec::encode(std::string &line, int len) {
 }
 
 
-void encdec::shortToBytes(short num, char* bytesArr)
-{
-    bytesArr[0] = ((num >> 8) & 0xFF);
-    bytesArr[1] = (num & 0xFF);
-}
-
-short encdec::bytesToShort(char* bytesArr)
-{
-    short result = (short)((bytesArr[0] & 0xff) << 8);
-    result += (short)(bytesArr[1] & 0xff);
-    return result;
-}
