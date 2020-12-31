@@ -101,12 +101,6 @@ bool ConnectionHandler::sendFrameAscii(const std::string& frame, char delimiter)
 	return sendBytes(&delimiter,1);
 }
 */
-
-//TODO my code below make sure to remove excess code later
-bool ConnectionHandler::sendFrameAscii(const std::string& frame) {
-    return sendBytes(frame.c_str(),frame.length());
-}
- 
 // Close down the connection properly.
 void ConnectionHandler::close() {
     try{
@@ -115,3 +109,10 @@ void ConnectionHandler::close() {
         std::cout << "closing failed: connection already closed" << std::endl;
     }
 }
+
+//TODO my code below make sure to remove excess code later
+/*bool ConnectionHandler::sendFrameAscii(const std::string& frame) {
+    return sendBytes(frame.c_str(),frame.length());
+}*/
+ 
+
