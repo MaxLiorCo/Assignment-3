@@ -7,10 +7,10 @@ import bgu.spl.net.impl.BGRSServer.User;
 import java.io.Serializable;
 
 public class ISREGISTEREDCommand implements Command<BGRSProtocol<?>> {
-    String message;
+    short courseNum;
 
-    public ISREGISTEREDCommand(String _message) {
-        message = _message;
+    public ISREGISTEREDCommand(short courseNum) {
+        this.courseNum = courseNum;
 
     }
 
@@ -20,9 +20,8 @@ public class ISREGISTEREDCommand implements Command<BGRSProtocol<?>> {
         if (user == null || user.isAdmin()) // if client isn't connected or is an admin
             return new ERRMessage().sendERR("9");
         Integer[] registeredCourses = user.getRegisteredCoursesArray();
-        int courseToCheck = getCourseNum(message);
-        for (Integer courseNum : registeredCourses) {
-            if (courseNum == courseToCheck)
+        for (Integer courses : registeredCourses) {
+            if (courses == courseNum)
                 return new ACKMessage().sendACK("9", "REGISTERED");
         }
         return new ACKMessage().sendACK("9", "NOT REGISTERED");

@@ -5,10 +5,10 @@ import bgu.spl.net.impl.BGRSServer.*;
 import java.io.Serializable;
 
 public class UNREGISTERCommand implements Command<BGRSProtocol<?>> {
-    String message;
+    short courseNum;
 
-    public UNREGISTERCommand(String _message) {
-        message = _message;
+    public UNREGISTERCommand(short courseNum) {
+        this.courseNum = courseNum;
 
     }
 
@@ -18,7 +18,7 @@ public class UNREGISTERCommand implements Command<BGRSProtocol<?>> {
         if (user == null || user.isAdmin()) // client not logged in or no an admin
             return new ERRMessage().sendERR("10");
         Database db = Database.getInstance();
-        Course courseToRemove = db.getCourses().get(getCourseNum(message));
+        Course courseToRemove = db.getCourses().get(courseNum);
         if (courseToRemove == null || !user.removeCourse(courseToRemove)) // such course doesn't exist, or user isn't registered to this course
             return new ERRMessage().sendERR("10");
         return new ACKMessage().sendACK("10", "");

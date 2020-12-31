@@ -6,10 +6,10 @@ import java.io.Serializable;
 import java.util.Arrays;
 
 public class KDAMCHECKCommand implements Command<BGRSProtocol<?>> {
-    String message;
+    short courseNum;
 
-    public KDAMCHECKCommand(String _message) {
-        message = _message;
+    public KDAMCHECKCommand(short courseNum) {
+        this.courseNum = courseNum;
 
     }
 
@@ -19,7 +19,7 @@ public class KDAMCHECKCommand implements Command<BGRSProtocol<?>> {
         if (user == null || user.isAdmin()) // client not logged in or command was sent by an admin
             return new ERRMessage().sendERR("6");
         Database db = Database.getInstance();
-        Course course = db.getCourses().get(Integer.decode(message));
+        Course course = (db.getCourses()).get(courseNum);
         if (course == null) // such course doesn't exist
             return new ERRMessage().sendERR("6");
         int[] kdam = course.getKdamCourses();

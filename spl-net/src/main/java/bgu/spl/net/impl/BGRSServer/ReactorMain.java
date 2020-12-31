@@ -7,8 +7,11 @@ import bgu.spl.net.srv.Server;
 public class ReactorMain {
     public static void main(String[] args) {
         Database db = Database.getInstance();//one shared object
-        db.initialize("/Courses.txt"); //TODO how to actually initialize
-
+        boolean initialized = db.initialize("./Courses.txt"); //TODO how to actually initialize
+        if (!initialized) {
+            System.out.println("Couldn't initialize database, Exiting...");
+            System.exit(1);
+        }
         Server.reactor(
                 Runtime.getRuntime().availableProcessors(),
                 7777, //port
