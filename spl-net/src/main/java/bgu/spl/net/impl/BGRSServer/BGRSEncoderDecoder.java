@@ -27,12 +27,15 @@ public class BGRSEncoderDecoder implements MessageEncoderDecoder<Serializable> {
                 case 1:
                     if (counter == 2)
                         return new ADMINREGCommand(popString());
+                    break;
                 case 2:
                     if (counter == 2)
                         return new STUDENTREGCommand(popString());
+                    break;
                 case 3:
                     if (counter == 2)
                         return new LOGINCommand(popString());
+                    break;
                 case 4:
                     reset();
                     return new LOGOUTCommand();
@@ -40,25 +43,31 @@ public class BGRSEncoderDecoder implements MessageEncoderDecoder<Serializable> {
                     if (len == 4) {
                         return new COURSEREGCommand(popString());
                     }
+                    break;
                 case 6:
                     if (len == 4) {
                         return new KDAMCHECKCommand(popString());
                     }
+                    break;
                 case 7:
                     if (len == 4) {
                         return new COURSESTATCommand(popString());
                     }
+                    break;
                 case 8:
                     if (counter == 1)
                         return new STUDENTSTATCommand(popString());
+                    break;
                 case 9:
                     if (len == 4) {
                         return new ISREGISTEREDCommand(popString());
                     }
+                    break;
                 case 10:
                     if (len == 4) {
                         return new UNREGISTERCommand(popString());
                     }
+                    break;
                 case 11:
                     reset();
                     return  new MYCOURSESCommand();
