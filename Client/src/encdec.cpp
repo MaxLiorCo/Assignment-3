@@ -5,6 +5,8 @@
 
 using namespace std;
 
+
+
 void encdec::shortToBytes(short num, char* bytesArr)
 {
     bytesArr[0] = ((num >> 8) & 0xFF);
@@ -93,5 +95,3 @@ string encdec::encode(std::string &line, int len) {
 
     return result;
 }
-
-
