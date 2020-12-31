@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Passive object representing the Database where all courses and users are stored.
@@ -28,8 +29,8 @@ public class Database {
 
     //to prevent user from creating new Database
     private Database() {
-        registeredUsers = new HashMap<>();
-        courses = new HashMap<>();
+        registeredUsers = new ConcurrentHashMap<>();
+        courses = new ConcurrentHashMap<>();
     }
 
     /**
@@ -47,7 +48,7 @@ public class Database {
         File file = new File(coursesFilePath);
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             User.initializeCourseArray(coursesFilePath); //the weird sorted by file, array of courses user has registered to
-            String courseLine = "";
+            String courseLine;
             while ((courseLine = br.readLine()) != null) {
                 int courseNum = Integer.decode(parser(courseLine)); // course ID
                 courseLine = courseLine.substring(courseLine.indexOf('|') + 1);
@@ -126,5 +127,12 @@ public class Database {
             return false;
         registeredUsers.put(user.getUserName(), user);
             return true;
+    }
+    public Map<String, User> getRegisteredUsers() {
+        return registeredUsers;
+    }
+
+    public Map<Integer, Course> getCourses() {
+        return courses;
     }
 }

@@ -14,12 +14,16 @@ public class User {
     private static int[] allCourses;
     private List<Integer> courseIndex;
     private boolean isAdmin;
+    private boolean loggedIn;
+
+
 
     public User(String _user, String _password, boolean _isAdmin){
         user = _user;
         password =_password;
         isAdmin = _isAdmin;
         courseIndex = new ArrayList<>();
+        loggedIn = false;
     }
 
     // courses ordered by Course.txt
@@ -27,7 +31,7 @@ public class User {
         File file = new File(coursesFilePath);
         List<Integer> listCourse = new LinkedList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-            String courseLine = "";
+            String courseLine;
             while ((courseLine = br.readLine()) != null) {
                 int currIndex = 0;
                 while (!(courseLine.charAt(currIndex) == '|')){
@@ -49,7 +53,7 @@ public class User {
 
     //register course to student
     public void registerToCourse(Course course) throws Error{
-        synchronized(course) {
+        synchronized(course) { //TODO maybe not needed
             boolean registered = false;
             if(course == null)
                 throw new Error("no such course");
@@ -95,11 +99,31 @@ public class User {
         return array;
     }
 
+    /**
+     * Removes the desired course from registered courses of the student.
+     * @param courseToRemove
+     * @return true upon successful removal, false otherwise (if student isn't registered to this course from the beginning.
+     */
+    //TODO!!
+    public boolean removeCourse(Course courseToRemove){
+        // use function boolean removeStudent(String) in Course
+        return false;
+    }
     public boolean isAdmin(){
         return isAdmin;
     }
     public String getUserName(){
         return this.user;
+    }
+    public String getPassword(){
+        return password;
+    }
+    public boolean isLoggedIn() {
+        return loggedIn == true;
+    }
+
+    public void setLoggedIn(boolean loggedIn) {
+        this.loggedIn = loggedIn;
     }
 
 /*    public List<Integer> getListOfCourseIndexInAllCoursesArray(){
