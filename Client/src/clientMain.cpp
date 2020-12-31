@@ -5,6 +5,7 @@ using namespace std;
 
 
 string encode(std::string &line , int len);
+void shortToBytes(short num, char* bytesArr);
 
 int main(int argc, char *argv[]) {
 
@@ -34,7 +35,7 @@ int main(int argc, char *argv[]) {
         string toBytes = encode(line , len);
         //
         //TODO convert line to required byte array and length
-        if (!connectionHandler.sendFrameAscii( toBytes.c_str() , toBytes.length())) {
+        if (!connectionHandler.sendBytes( toBytes.c_str() , toBytes.length())) {
             std::cout << "Disconnected. Exiting...\n" << std::endl;
             break;
         }
@@ -64,31 +65,38 @@ int main(int argc, char *argv[]) {
             break;
         }
     }
+    cout << "got out of loop" <<endl;
 
     return 0;
 }
 
 
-void shortToBytes(short num, char* bytesArr);
 
 string encode(std::string line , int len){
     int nextSpace = line.find(" ");
     string command = line.substr(0, nextSpace); //Command
     string result = "";
-    char bytes[2];
-    //TODO do not forget to transfer to short first other wise input like "365" will be 3 bytes
+    char shortBytes[2];
+    //TODO do not forget to transfer to short first otherfwise input like "365" will be 3 bytes
     if(command.compare("ADMINREG")){
-        shortToBytes(1,bytes);
-        result.append(bytes); //opCode to make sure it takes 2 bytes in string
-
-        nextSpace = new_line.find(" ",1);
-        command.append(new_line.substr(1,nextSpace)); // append Username
+        shortToBytes(1,shortBytes);
+        result.append(shortBytes); //opCode to make sure it takes 2 bytes in string
+        int currSpace = nextSpace;
+        nextSpace = line.find(" ",nextSpace + 1);
+        result.append(line.substr(currSpace+1,nextSpace)); // append Username
         command.append("\0");
-        new_line = new_line.substr(nextSpace);
-        nextSpace = new_line.find(" ", 1);
+        result.append(line.substr(nextSpace + 1)); // append Password
+        command.append("\0");
     }
     else if(command.compare("STUDENTREG")){
-        shortToBytes(2 , bytes); charArrayLength+= 2;
+        shortToBytes(1,shortBytes);
+        result.append(shortBytes); //opCode to make sure it takes 2 bytes in string
+        int currSpace = nextSpace;
+        nextSpace = line.find(" ",nextSpace + 1);
+        result.append(line.substr(currSpace+1,nextSpace)); // append Username
+        command.append("\0");
+        result.append(line.substr(nextSpace + 1)); // append Password
+        command.append("\0");
     }
     else if(command.compare("LOGIN")){
         shortToBytes(3 , bytes); charArrayLength+= 2;
