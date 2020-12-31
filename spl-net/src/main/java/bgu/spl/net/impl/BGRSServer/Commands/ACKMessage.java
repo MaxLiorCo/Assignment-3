@@ -10,7 +10,7 @@ public class ACKMessage {
     Serializable sendACK(String commandOpCode, String printMessage){
         byte[] stringMessage = printMessage.getBytes(StandardCharsets.UTF_8);
         byte [] result = new byte[4+stringMessage.length + 1];
-        byte[] twoByte = shortToBytes((short)13);
+        byte[] twoByte = shortToBytes((short)12);
         result[0]= twoByte[0];
         result[1]= twoByte[1];
         twoByte = shortToBytes(Short.parseShort(commandOpCode));

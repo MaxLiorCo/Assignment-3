@@ -102,12 +102,11 @@ public class User {
     /**
      * Removes the desired course from registered courses of the student.
      * @param courseToRemove
-     * @return true upon successful removal, false otherwise (if student isn't registered to this course from the beginning.
+     * @return true upon successful removal, false otherwise (if student isn't registered to this course from the beginning, etc)
      */
-    //TODO!!
     public boolean removeCourse(Course courseToRemove){
-        // use function boolean removeStudent(String) in Course
-        return false;
+        //try to remove user from course & course from user, both must happen
+        return courseToRemove.removeStudent(this.user) & courseIndex.remove((Integer) courseToRemove.getCourseNum());
     }
     public boolean isAdmin(){
         return isAdmin;
@@ -125,9 +124,5 @@ public class User {
     public void setLoggedIn(boolean loggedIn) {
         this.loggedIn = loggedIn;
     }
-
-/*    public List<Integer> getListOfCourseIndexInAllCoursesArray(){
-        return courseIndex;
-    }*/
 
 }
