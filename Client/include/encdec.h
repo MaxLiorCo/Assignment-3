@@ -11,7 +11,7 @@ private:
     static short bytesToShort(char* bytesArr);
 public:
     static std::string encode(std::string &line , int len);
-    static std::string decode(char replyOpCode);
+    static std::string decode(char replyOpCode[]);
 };
 
 #endif //CLIENT_ENCDEC_H

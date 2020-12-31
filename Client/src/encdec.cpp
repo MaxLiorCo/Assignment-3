@@ -26,9 +26,9 @@ string encdec::encode(std::string &line, int len) {
     string result = "";
     char shortBytes[2];
     //TODO do not forget to transfer to short first otherfwise input like "365" will be 3 bytes
-    if(command.compare("ADMINREG")){
+    if(command == "ADMINREG"){
         shortToBytes(1,shortBytes);
-        result.append(shortBytes); //opCode to make sure it takes 2 bytes in string
+        result = result.append(shortBytes); //opCode to make sure it takes 2 bytes in string
         int currSpace = nextSpace;
         nextSpace = line.find(" ",nextSpace + 1);
         result.append(line.substr(currSpace+1,nextSpace)); // append Username
@@ -36,7 +36,7 @@ string encdec::encode(std::string &line, int len) {
         result.append(line.substr(nextSpace + 1)); // append Password
         command.append("\0");
     }
-    else if(command.compare("STUDENTREG")){
+    else if(command == "STUDENTREG"){
         shortToBytes(2,shortBytes);
         result.append(shortBytes); //opCode to make sure it takes 2 bytes in string
         int currSpace = nextSpace;
@@ -46,7 +46,7 @@ string encdec::encode(std::string &line, int len) {
         result.append(line.substr(nextSpace + 1)); // append Password
         command.append("\0");
     }
-    else if(command.compare("LOGIN")){
+    else if(command == "LOGIN"){
         shortToBytes(3,shortBytes);
         result.append(shortBytes); //opCode to make sure it takes 2 bytes in string
         int currSpace = nextSpace;
@@ -56,37 +56,37 @@ string encdec::encode(std::string &line, int len) {
         result.append(line.substr(nextSpace + 1)); // append Password
         command.append("\0");
     }
-    else if(command.compare("LOGOUT")){
+    else if(command == "LOGOUT"){
         shortToBytes(4,shortBytes);
         result.append(shortBytes); //opCode to make sure it takes 2 bytes in string
     }
-    else if(command.compare("COURSEREG")){
+    else if(command == "COURSEREG"){
         shortToBytes(5,shortBytes);
         result.append(shortBytes); //opCode to make sure it takes 2 bytes in string
     }
-    else if(command.compare("KDAMCHECK")){
+    else if(command == "KDAMCHECK"){
         shortToBytes(6,shortBytes);
         result.append(shortBytes); //opCode to make sure it takes 2 bytes in string
     }
-    else if(command.compare("COURSESTAT")){
+    else if(command == "COURSESTAT"){
         shortToBytes(7,shortBytes);
         result.append(shortBytes); //opCode to make sure it takes 2 bytes in string
     }
-    else if(command.compare("STUDENTSTAT")){
+    else if(command == "STUDENTSTAT"){
         shortToBytes(8,shortBytes);
         result.append(shortBytes); //opCode to make sure it takes 2 bytes in string
         result.append(line.substr(nextSpace+1)); // append Username
         command.append("\0");
     }
-    else if(command.compare("ISREGISTERED")){
+    else if(command == "ISREGISTERED"){
         shortToBytes(9,shortBytes);
         result.append(shortBytes); //opCode to make sure it takes 2 bytes in string
     }
-    else if(command.compare("UNREGISTER")){
+    else if(command == "UNREGISTER"){
         shortToBytes(10,shortBytes);
         result.append(shortBytes); //opCode to make sure it takes 2 bytes in string
     }
-    else if(command.compare("MYCOURSES")){
+    else if(command == "MYCOURSES"){
         shortToBytes(11,shortBytes);
         result.append(shortBytes); //opCode to make sure it takes 2 bytes in string
     }

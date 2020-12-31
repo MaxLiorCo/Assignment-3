@@ -1,18 +1,21 @@
 #include <iostream>
 #include <connectionHandler.h>
-#include "encdec.h"
+#include <encdec.h>
 
 using namespace std;
 
 
+/*class KeyboardListener {
+private:
+    int _id;
+    std::mutex &_mutex;
+public:
+    KeyboardListener(int id, std::mutex &mutex) : _id(id), _mutex(mutex) {}
 
-class KeyboardListener {
-    private:
-        int _id;
-        std::mutex& _mutex;
-
-
-};
+    void run() {
+        std::cin.getline(buf, bufsize);
+    }
+};*/
 
 int main(int argc, char *argv[]) {
 
@@ -60,18 +63,19 @@ int main(int argc, char *argv[]) {
             std::cout << "Disconnected. Exiting...\n" << std::endl;
             break;
         }
-        std::string answer = encdec::decode(replyOpCode);
+/*        std::string answer = encdec::decode(replyOpCode);
 
         std::cout << "Reply: " << answer << " " << len << " bytes " << std::endl << std::endl;
         if (answer == "bye") {
             std::cout << "Exiting...\n" << std::endl;
             break;
-        }
+        }*/
     }
     std::cout << "got out of loop" << std::endl;
 
     return 0;
 }
+
 
 /*
 
