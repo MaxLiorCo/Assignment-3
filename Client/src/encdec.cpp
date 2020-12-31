@@ -95,3 +95,5 @@ string encdec::encode(std::string &line, int len) {
 
     return result;
 }
+
+string decode(char replyOpCode[]) {return nullptr;}
