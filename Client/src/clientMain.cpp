@@ -95,10 +95,10 @@ int main(int argc, char *argv[]) {
             std::cout << "Disconnected. Exiting...\n" << std::endl;
             break;
         }
-        cout << opCodeArr[0] + 0 << " " << opCodeArr[1] + 0<<endl;
+       // cout << opCodeArr[0] + 0 << " " << opCodeArr[1] + 0<<endl;
         short opCode = encdec::decodeTwoBytes(opCodeArr);
         short opCodeMessage = encdec::decodeTwoBytes(messageOpCodeArr);
-        if(opCode == 12){
+        if(opCode == 12) {
             cout << "ACK " << opCodeMessage << endl;
             char buffer[bufsize];
             std::string str(buffer);
@@ -117,7 +117,7 @@ int main(int argc, char *argv[]) {
             cout << "ERR " << opCodeMessage << endl;
         } else cout << "Incorrect OpCode returned" << endl;
     }
-    std::cout << "session finished" << std::endl;
+  //  std::cout << "session finished" << std::endl;
     th1.detach();
     return 0;
 }
