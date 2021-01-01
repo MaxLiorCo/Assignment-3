@@ -24,9 +24,9 @@ public class STUDENTREGCommand implements Command<BGRSProtocol<?>> {
         String password = getPassword(message);
         boolean wasRegistered = db.registerUser(new User(userName, password, false));
         if (wasRegistered) {
-            return new ACKMessage().sendACK("1", "");
+            return new ACKMessage().sendACK("2", "");
         }
         else
-            return new ERRMessage().sendERR("1");
+            return new ERRMessage().sendERR("2");
     }
 }

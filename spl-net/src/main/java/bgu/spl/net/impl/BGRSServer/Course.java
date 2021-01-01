@@ -31,7 +31,7 @@ public class Course {
      *  This function is called when we want to register a student.
      * @throws Error exception upon failed registration attempt.
      */
-    public synchronized void registerStudent(User student) throws Error {
+    public void registerStudent(User student) throws Error {
         if (kdamCourses.length == 0 || assertKdam(student.getRegisteredCoursesArray()))
             synchronized (this) { //synchronized is necessary in situations where 2 different students try to register to the same course
                 if (numOfRegisteredStudents < numOfMaxStudents) {
@@ -45,7 +45,7 @@ public class Course {
 
     private boolean assertKdam(Integer[] registeredCoursesArray) throws Error {
         List<Integer> coursesOfStudent = Arrays.asList(registeredCoursesArray);
-        List<Integer> kdamCoursesList =Arrays.asList( kdamCourses);
+        List<Integer> kdamCoursesList =Arrays.asList(kdamCourses);
         if(!(coursesOfStudent.containsAll(kdamCoursesList)))
             throw new Error("Haven't done all kdam courses needed for this course");
         return true;
@@ -71,7 +71,7 @@ public class Course {
         return registeredStudentList;
     }
     public boolean removeStudent(String username){
+        numOfRegisteredStudents--;
         return registeredStudentList.remove(username);
     }
-
 }
