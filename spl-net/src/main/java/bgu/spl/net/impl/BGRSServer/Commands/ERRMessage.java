@@ -12,7 +12,7 @@ public class ERRMessage {
         twoByte = shortToBytes(Short.parseShort(commandOpCode));
         result[2]= twoByte[0];
         result[3]= twoByte[1];
-        return  result;
+        return result;
     }
 
     public byte[] shortToBytes(short num)

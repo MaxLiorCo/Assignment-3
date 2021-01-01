@@ -2,9 +2,11 @@
 #include <connectionHandler.h>
 #include <encdec.h>
 #include <bitset>
+#include <mutex>
+
+#include <thread>
 
 using namespace std;
-
 
 class KeyboardListener {
 private:
@@ -28,7 +30,6 @@ public:
                 continue;
             }
 
-            //TODO convert line to required byte array and length
             if (!connectionHandler->sendBytes(toBytes.c_str(), toBytes.length())) {
                 std::cout << "Disconnected. Exiting...\n" << std::endl;
                 break;
@@ -108,7 +109,7 @@ int main(int argc, char *argv[]) {
                 std::cout << "Disconnected. Exiting...\n" << std::endl;
                 break;
             }
-            else if(opCodeMessage == 6 | opCodeMessage == 7 | opCodeMessage == 8 | opCodeMessage == 9 | opCodeMessage == 11)
+            else if((opCodeMessage == 6) | (opCodeMessage == 7) | (opCodeMessage == 8) | (opCodeMessage == 9) | (opCodeMessage == 11))
                 cout << str << endl;
 
         }
