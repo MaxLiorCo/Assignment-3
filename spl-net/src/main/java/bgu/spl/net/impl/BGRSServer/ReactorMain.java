@@ -13,8 +13,8 @@ public class ReactorMain {
             System.exit(1);
         }
         Server.reactor(
-                Runtime.getRuntime().availableProcessors(),
-                7777, //port
+                Integer.decode(args[1]),
+                Integer.decode(args[0]), //port
                 () ->  new BGRSProtocol(db), //protocol factory
                 BGRSEncoderDecoder::new //message encoder decoder factory
         ).serve();

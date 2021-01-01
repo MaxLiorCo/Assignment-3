@@ -3,11 +3,10 @@
 #include <encdec.h>
 #include <bitset>
 #include <mutex>
+
 #include <thread>
 
-
 using namespace std;
-
 
 class KeyboardListener {
 private:
@@ -31,7 +30,6 @@ public:
                 continue;
             }
 
-            //TODO convert line to required byte array and length
             if (!connectionHandler->sendBytes(toBytes.c_str(), toBytes.length())) {
                 std::cout << "Disconnected. Exiting...\n" << std::endl;
                 break;
@@ -64,7 +62,6 @@ int main(int argc, char *argv[]) {
     KeyboardListener kb(1, mutex, session, &connectionHandler);
 
     std::thread th1(&KeyboardListener::run, &kb);
-    th1.detach();
 
     //From here we will see the rest of the BGRS client implementation:
     while (session) {
