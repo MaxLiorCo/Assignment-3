@@ -73,7 +73,7 @@ public class BGRSEncoderDecoder implements MessageEncoderDecoder<Serializable> {
                     break;
                 case 11:
                     reset();
-                    return  new MYCOURSESCommand();
+                    return new MYCOURSESCommand();
             }
         }
         return null;
@@ -90,6 +90,7 @@ public class BGRSEncoderDecoder implements MessageEncoderDecoder<Serializable> {
         byte[] temp = new byte[2];
         temp[0] = bytes[2];
         temp[1] = bytes[3];
+        reset();
         return temp;
     }
 

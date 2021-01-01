@@ -20,7 +20,7 @@ public class ACKMessage {
         System.arraycopy(stringMessage, 0, result, 4, result.length - 1 - 4); //copy string into result
 
         result[result.length-1] = '\0';
-        return  result;
+        return result;
     }
     byte[] shortToBytes(short num)
     {

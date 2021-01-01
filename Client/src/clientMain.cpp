@@ -6,19 +6,41 @@
 using namespace std;
 
 
-/*class KeyboardListener {
+class KeyboardListener {
 private:
     int _id;
-    std::mutex &_mutex;
+    std::mutex&_mutex;
+    bool& _session;
+    ConnectionHandler* connectionHandler;
 public:
-    KeyboardListener(int id, std::mutex &mutex) : _id(id), _mutex(mutex) {}
+    KeyboardListener(int id, std::mutex &mutex, bool session, ConnectionHandler* ch) : _id(id), _mutex(mutex), _session(session), connectionHandler(ch) {}
 
     void run() {
-        std::cin.getline(buf, bufsize);
-    }
-};*/
+        while(_session) {
+            std::lock_guard<std::mutex> lock(_mutex);
+            const short bufsize = 1024;
+            char buf[bufsize];
+            std::cin.getline(buf, bufsize);
+            std::string line(buf);
 
-void test();
+            std::string toBytes = encdec::encode(line);
+            if (toBytes.empty()) {
+                continue;
+            }
+
+            //TODO convert line to required byte array and length
+            if (!connectionHandler->sendBytes(toBytes.c_str(), toBytes.length())) {
+                std::cout << "Disconnected. Exiting...\n" << std::endl;
+                break;
+            }
+            // connectionHandler.sendBytes()
+            std::cout << "Sent " << toBytes.length() << " bytes to server" << std::endl;
+            if (line == "LOGOUT")
+                break;
+        }
+    }
+};
+
 int main(int argc, char *argv[]) {
 
     if (argc < 3) {
@@ -27,8 +49,6 @@ int main(int argc, char *argv[]) {
     }
     std::string host = argv[1];
     short port = atoi(argv[2]);
-
-    //test();
 
     ConnectionHandler connectionHandler(host, port);
     if (!connectionHandler.connect()) {
@@ -39,14 +59,18 @@ int main(int argc, char *argv[]) {
         std::cout << "Connection established to: " << host << ":" << port << std::endl;
 
     bool session = true;
+    std::mutex mutex;
+    KeyboardListener kb(1, mutex, session, &connectionHandler);
+
+    std::thread th1(&KeyboardListener::run, &kb);
+    th1.detach();
+
     //From here we will see the rest of the BGRS client implementation:
     while (session) {
         const short bufsize = 1024;
-        char buf[bufsize];
+/*        char buf[bufsize];
         std::cin.getline(buf, bufsize);
         std::string line(buf);
-        int len=line.length();
-
 
         std::string toBytes = encdec::encode(line);
         if (toBytes.empty()) {
@@ -59,10 +83,8 @@ int main(int argc, char *argv[]) {
             break;
         }
         // connectionHandler.sendBytes()
-        std::cout << "Sent " <<  toBytes.length() << " bytes to server" << std::endl;
-
-
-
+        std::cout << "Sent " <<  toBytes.length() << " bytes to server" << std::endl;*/
+  //----------------------------------------------------------------------------------------------------
         char opCodeArr[2];
         char messageOpCodeArr[2];
         // Get back an answer: by using the expected number of bytes (len bytes + newline delimiter)
@@ -89,7 +111,7 @@ int main(int argc, char *argv[]) {
                 std::cout << "Disconnected. Exiting...\n" << std::endl;
                 break;
             }
-            else if(opCodeMessage == 6 | opCodeMessage == 7 | opCodeMessage == 8 | opCodeMessage == 9)
+            else if(opCodeMessage == 6 | opCodeMessage == 7 | opCodeMessage == 8 | opCodeMessage == 9 | opCodeMessage = 11)
                 cout << str << endl;
 
         }
@@ -98,16 +120,7 @@ int main(int argc, char *argv[]) {
         } else cout << "Incorrect OpCode returned" << endl;
     }
     std::cout << "session finished" << std::endl;
-
+    th1.join();
     return 0;
 }
 
-void test(){
-    int what = !0 && 2;
-    std::string command = "UNREGISTER 400";
-    std::string s = encdec::encode(command);
-    const char* c = s.c_str();
-    std::bitset<8> x(c[3]);
-    cout << x << endl;  //prints bits of char/byte in string in place 3
-    int len = s.length();
-}

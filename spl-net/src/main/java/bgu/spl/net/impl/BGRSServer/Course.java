@@ -43,7 +43,7 @@ public class Course {
         throw new Error("No place left in this course");
     }
 
-    private boolean assertKdam(Integer[] registeredCoursesArray) throws Error{
+    private boolean assertKdam(Integer[] registeredCoursesArray) throws Error {
         List<Integer> coursesOfStudent = Arrays.asList(registeredCoursesArray);
         List<Integer> kdamCoursesList =Arrays.asList( kdamCourses);
         if(!(coursesOfStudent.containsAll(kdamCoursesList)))
