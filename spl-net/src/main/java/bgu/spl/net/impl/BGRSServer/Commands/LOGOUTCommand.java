@@ -9,6 +9,7 @@ import java.io.Serializable;
 public class LOGOUTCommand implements Command<BGRSProtocol<?>> {
     @Override
     public Serializable execute(BGRSProtocol<?> protocol) {
+        System.out.println("reached logout");
         User user = protocol.getUser();
         if (user == null)
             return new ERRMessage().sendERR("4");

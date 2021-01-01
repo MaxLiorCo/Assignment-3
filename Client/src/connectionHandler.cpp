@@ -52,10 +52,11 @@ bool ConnectionHandler::sendBytes(const char bytes[], int bytesToWrite) {
 	boost::system::error_code error;
     try {
         while (!error && bytesToWrite > tmp ) {
+            //cout << "error" << endl;
 			tmp += socket_.write_some(boost::asio::buffer(bytes + tmp, bytesToWrite - tmp), error);
         }
 		if(error)
-			throw boost::system::system_error(error);
+            throw boost::system::system_error(error);
     } catch (std::exception& e) {
         std::cerr << "recv failed (Error: " << e.what() << ')' << std::endl;
         return false;

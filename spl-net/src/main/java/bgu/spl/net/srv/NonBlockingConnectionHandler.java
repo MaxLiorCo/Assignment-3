@@ -21,6 +21,8 @@ public class NonBlockingConnectionHandler<T> implements ConnectionHandler<T> {
     private final SocketChannel chan;
     private final Reactor reactor;
 
+    int counter =0;
+
     public NonBlockingConnectionHandler(
             MessageEncoderDecoder<T> reader,
             MessagingProtocol<T> protocol,

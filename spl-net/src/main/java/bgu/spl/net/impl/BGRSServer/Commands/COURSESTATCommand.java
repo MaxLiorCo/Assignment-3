@@ -17,6 +17,7 @@ public class COURSESTATCommand implements Command<BGRSProtocol<?>> {
 
     @Override
     public Serializable execute(BGRSProtocol<?> protocol) {
+        System.out.println("reached COURSESTAT");
         User user = protocol.getUser();
         if (user == null || !user.isAdmin())
             return new ERRMessage().sendERR("7");
@@ -35,7 +36,6 @@ public class COURSESTATCommand implements Command<BGRSProtocol<?>> {
         courseData += "Course: (" + course.getCourseNum() + ") " + course.getCourseName() + "\n";
         courseData += "Seats Available: " + numOfRegistered + "/" + totalSeats + "\n";
         courseData += "Students Registered: " + arrToString + "\n";
-        System.out.println(courseData); //TODO
         return new ACKMessage().sendACK("7", courseData);
 
 

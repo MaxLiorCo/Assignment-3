@@ -49,6 +49,9 @@ int main(int argc, char *argv[]) {
 
 
         std::string toBytes = encdec::encode(line);
+        if (toBytes.empty()) {
+            continue;
+        }
         //
         //TODO convert line to required byte array and length
         if (!connectionHandler.sendBytes( toBytes.c_str() , toBytes.length())) {
@@ -90,23 +93,9 @@ int main(int argc, char *argv[]) {
         }
         else if(opCode == 13){
             cout << "ERR " << opCodeMessage << endl;
-        }
-        else
-            cout << "Incorrect OpCode returned" << endl;
-
-
-
+        } else cout << "Incorrect OpCode returned" << endl;
     }
     std::cout << "got out of loop" << std::endl;
-
     return 0;
 }
 
-void test(){
-    std::string command = "UNREGISTER 400";
-    std::string s = encdec::encode(command);
-    const char* c = s.c_str();
-    std::bitset<8> x(c[3]);
-    cout << x << endl;  //prints bits of char/byte in string in place 3
-    int len = s.length();
-}

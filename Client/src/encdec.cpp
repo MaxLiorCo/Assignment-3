@@ -57,6 +57,7 @@ string encdec::encode(std::string &line) {
         result.append("\0",1);
     }
     else if(command == "LOGOUT"){
+        cout << "reached logout " << endl;
         shortToBytes(4,shortBytes);
         result.append(shortBytes, 2); //opCode to make sure it takes 2 bytes in string
     }
@@ -76,6 +77,7 @@ string encdec::encode(std::string &line) {
         result.append(shortBytes, 2); // course number encoded in 2 bytes
     }
     else if(command == "COURSESTAT"){
+        cout << "reached COURSESTAT" << endl;
         shortToBytes(7,shortBytes);
         result.append(shortBytes, 2); //opCode to make sure it takes 2 bytes in string
         string course = line.substr(nextSpace+1);
@@ -109,7 +111,7 @@ string encdec::encode(std::string &line) {
     else
         cerr << "invalid command" << endl;
 
-    //NOTICE: debugger dosent show last "\0" but it is included in the string length
+    //NOTICE: debugger doesnt show last "\0" but it is included in the string length
     return result;
 }
 
