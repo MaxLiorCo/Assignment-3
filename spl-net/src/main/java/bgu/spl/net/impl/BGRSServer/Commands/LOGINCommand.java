@@ -31,17 +31,18 @@ public class LOGINCommand implements Command<BGRSProtocol<?>> {
         String password = getPassword(message);
         Map<String, User> users = db.getRegisteredUsers();
         User user = users.get(userName);
-        if (user == null || (!password.equals(user.getPassword()))) // such user doesn't exist or password doesn't match or this user already logged-in by another client
+        if (user == null || (!(password.equals(user.getPassword())) | user.isLoggedIn())) // such user doesn't exist or password doesn't match or this user already logged-in by another client
             return new ERRMessage().sendERR("3");
         // All of the above doesn't happen, means that: username and password given by the client are correct, and no-one uses the user right now.
         //TODO maybe this is unnecessary?
         synchronized (user) { // synchronized to prevent situations where 2 different clients try to login concurrently to the same user.
-            if (!user.isLoggedIn())
+            if (!user.isLoggedIn()) {
                 user.setLoggedIn(true);
+                protocol.setUser(user);
+            }
             else
                 return new ERRMessage().sendERR("3");
         }
-        protocol.setUser(user);
         return new ACKMessage().sendACK("3", "");
     }
 }

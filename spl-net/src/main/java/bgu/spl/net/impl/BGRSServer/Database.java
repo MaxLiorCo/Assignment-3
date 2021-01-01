@@ -123,10 +123,10 @@ public class Database {
      * @return True iff the specific user wasn't already taken, thus user was registered successfully to the database.
      */
     public synchronized boolean registerUser(User user){
-        if(registeredUsers.containsKey(user.getUserName()))
+        if (registeredUsers.containsKey(user.getUserName()))
             return false;
         registeredUsers.put(user.getUserName(), user);
-            return true;
+        return true;
     }
     public Map<String, User> getRegisteredUsers() {
         return registeredUsers;
