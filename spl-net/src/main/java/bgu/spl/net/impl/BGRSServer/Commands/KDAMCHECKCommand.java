@@ -22,7 +22,7 @@ public class KDAMCHECKCommand implements Command<BGRSProtocol<?>> {
         Course course = (db.getCourses()).get(courseNum);
         if (course == null) // such course doesn't exist
             return new ERRMessage().sendERR("6");
-        int[] kdam = course.getKdamCourses();
+        Integer[] kdam = course.getKdamCourses();
         String arr = Arrays.toString(kdam);
         arr = arr.replaceAll("\\s+", ""); // remove all spaces
         return new ACKMessage().sendACK("6", arr);

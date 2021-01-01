@@ -88,7 +88,7 @@ string encdec::encode(std::string &line) {
         shortToBytes(8,shortBytes);
         result.append(shortBytes, 2); //opCode to make sure it takes 2 bytes in string
         result.append(line.substr(nextSpace+1)); // append Username
-        command.append("\0");
+        result.append("\0",1);
     }
     else if(command == "ISREGISTERED"){
         shortToBytes(9,shortBytes);

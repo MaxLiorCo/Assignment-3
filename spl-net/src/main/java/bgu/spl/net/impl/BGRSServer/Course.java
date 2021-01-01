@@ -5,7 +5,7 @@ import java.util.*;
 public class Course {
     private int courseNum;
     private String courseName;
-    private int[] kdamCourses;
+    private Integer[] kdamCourses;
     private int numOfMaxStudents;
     private int numOfRegisteredStudents;
     private List<String> registeredStudentList;
@@ -14,7 +14,8 @@ public class Course {
     public Course(int courseNum, String courseName, List<Integer> kdam, int numOfMaxStudents) {
         this.courseNum = courseNum;
         this.courseName = courseName;
-        kdamCourses = new int[kdam.size()];
+        kdamCourses = new Integer[kdam.size()];
+        //Arrays.fill(kdamCourses, 0);
         int index = 0;
         for (Integer id : kdam) {
             kdamCourses[index] = id;
@@ -43,7 +44,9 @@ public class Course {
     }
 
     private boolean assertKdam(Integer[] registeredCoursesArray) throws Error{
-        if(!(Arrays.asList(registeredCoursesArray)).containsAll(Arrays.asList(kdamCourses)))
+        List<Integer> coursesOfStudent = Arrays.asList(registeredCoursesArray);
+        List<Integer> kdamCoursesList =Arrays.asList( kdamCourses);
+        if(!(coursesOfStudent.containsAll(kdamCoursesList)))
             throw new Error("Haven't done all kdam courses needed for this course");
         return true;
     }
@@ -58,7 +61,7 @@ public class Course {
     public int getNumOfRegisteredStudents(){
         return numOfRegisteredStudents;
     }
-    public int[] getKdamCourses() {
+    public Integer[] getKdamCourses() {
         return kdamCourses;
     }
     public String getCourseName() {

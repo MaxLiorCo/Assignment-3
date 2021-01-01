@@ -26,7 +26,7 @@ public class User {
         loggedIn = false;
     }
 
-    // courses ordered by Course.txt
+    // courses ordered by Course.txt called from database
     public static void initializeCourseArray(String coursesFilePath){
         File file = new File(coursesFilePath);
         List<Integer> listCourse = new LinkedList<>();
@@ -64,24 +64,32 @@ public class User {
             int courseNum = course.getCourseNum();
             for (int indexOfCourse = 0; indexOfCourse < allCourses.length && !registered; indexOfCourse++) {
                 if (allCourses[indexOfCourse] == courseNum) {
-                    //insert into list by index size
+                    //insert into list by index Of Course in allCourses array
+
                     int insertIndex = 0;
                     Iterator<Integer> it = courseIndex.iterator();
                     if (!it.hasNext()) {
                         courseIndex.add(insertIndex, indexOfCourse);
                         registered = true;
-                    } else {
-                        int listIndexPrevValue = -1;
+                    }
+                    else {
+                        //we need to find a place for this index amongst indexes of already registered courses
+                        //int listIndexPrevValue = -1;
                         while (it.hasNext() & !registered) {
                             int listIndexValue = it.next();
                             if (indexOfCourse == listIndexValue)
                                 throw new Error("already registered");
-                            else if (listIndexPrevValue < indexOfCourse && indexOfCourse < listIndexValue) {
+                            if (/*listIndexPrevValue < indexOfCourse &&*/ indexOfCourse < listIndexValue) {
                                 courseIndex.add(insertIndex, indexOfCourse);
                                 registered = true;
                             }
-                            listIndexPrevValue = listIndexValue;
+                            //listIndexPrevValue = listIndexValue;
                             insertIndex++;
+                        }
+                        if(!registered)//indexOfCourse is larger than that of any existing courses
+                        {
+                            courseIndex.add(insertIndex, indexOfCourse);
+                            registered = true;
                         }
                     }
                 }
