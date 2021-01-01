@@ -13,7 +13,7 @@ private:
     bool& _session;
     ConnectionHandler* connectionHandler;
 public:
-    KeyboardListener(int id, std::mutex &mutex, bool session, ConnectionHandler* ch) : _id(id), _mutex(mutex), _session(session), connectionHandler(ch) {}
+    KeyboardListener(int id, std::mutex &mutex, bool& session, ConnectionHandler* ch) : _id(id), _mutex(mutex), _session(session), connectionHandler(ch) {}
 
     void run() {
         while(_session) {
@@ -35,8 +35,6 @@ public:
             }
             // connectionHandler.sendBytes()
             std::cout << "Sent " << toBytes.length() << " bytes to server" << std::endl;
-            if (line == "LOGOUT")
-                break;
         }
     }
 };
@@ -63,7 +61,6 @@ int main(int argc, char *argv[]) {
     KeyboardListener kb(1, mutex, session, &connectionHandler);
 
     std::thread th1(&KeyboardListener::run, &kb);
-    th1.detach();
 
     //From here we will see the rest of the BGRS client implementation:
     while (session) {
@@ -111,7 +108,7 @@ int main(int argc, char *argv[]) {
                 std::cout << "Disconnected. Exiting...\n" << std::endl;
                 break;
             }
-            else if(opCodeMessage == 6 | opCodeMessage == 7 | opCodeMessage == 8 | opCodeMessage == 9 | opCodeMessage = 11)
+            else if(opCodeMessage == 6 | opCodeMessage == 7 | opCodeMessage == 8 | opCodeMessage == 9 | opCodeMessage == 11)
                 cout << str << endl;
 
         }
@@ -120,7 +117,7 @@ int main(int argc, char *argv[]) {
         } else cout << "Incorrect OpCode returned" << endl;
     }
     std::cout << "session finished" << std::endl;
-    th1.join();
+    th1.detach();
     return 0;
 }
 
