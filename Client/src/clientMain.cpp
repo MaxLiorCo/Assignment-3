@@ -28,7 +28,7 @@ int main(int argc, char *argv[]) {
     std::string host = argv[1];
     short port = atoi(argv[2]);
 
-  //  test();
+    //test();
 
     ConnectionHandler connectionHandler(host, port);
     if (!connectionHandler.connect()) {
@@ -52,7 +52,7 @@ int main(int argc, char *argv[]) {
         if (toBytes.empty()) {
             continue;
         }
-        //
+
         //TODO convert line to required byte array and length
         if (!connectionHandler.sendBytes( toBytes.c_str() , toBytes.length())) {
             std::cout << "Disconnected. Exiting...\n" << std::endl;
@@ -75,6 +75,7 @@ int main(int argc, char *argv[]) {
             std::cout << "Disconnected. Exiting...\n" << std::endl;
             break;
         }
+        cout << opCodeArr[0] + 0 << " " << opCodeArr[1] + 0<<endl;
         short opCode = encdec::decodeTwoBytes(opCodeArr);
         short opCodeMessage = encdec::decodeTwoBytes(messageOpCodeArr);
         if(opCode == 12){
@@ -83,19 +84,30 @@ int main(int argc, char *argv[]) {
             std::string str(buffer);
             if(opCodeMessage == 4) //Logout
                 session = false;
-            else if(true){ //TODO decide which opCodeMessages return additional strings (if required to do so)
-                if (!connectionHandler.getFrameAscii(str, '\0')) {
-                    std::cout << "Disconnected. Exiting...\n" << std::endl;
-                    break;
-                }
-                cout << str << endl;
+            //TODO decide which opCodeMessages return additional strings (if required to do so)
+            if (!connectionHandler.getFrameAscii(str, '\0')) {
+                std::cout << "Disconnected. Exiting...\n" << std::endl;
+                break;
             }
+            else if(opCodeMessage == 6 | opCodeMessage == 7 | opCodeMessage == 8 | opCodeMessage == 9)
+                cout << str << endl;
+
         }
         else if(opCode == 13){
             cout << "ERR " << opCodeMessage << endl;
         } else cout << "Incorrect OpCode returned" << endl;
     }
-    std::cout << "got out of loop" << std::endl;
+    std::cout << "session finished" << std::endl;
+
     return 0;
 }
 
+void test(){
+    int what = !0 && 2;
+    std::string command = "UNREGISTER 400";
+    std::string s = encdec::encode(command);
+    const char* c = s.c_str();
+    std::bitset<8> x(c[3]);
+    cout << x << endl;  //prints bits of char/byte in string in place 3
+    int len = s.length();
+}

@@ -7,7 +7,7 @@ import bgu.spl.net.srv.Server;
 public class ReactorMain {
     public static void main(String[] args) {
         Database db = Database.getInstance();//one shared object
-        boolean initialized = db.initialize("./Courses.txt"); //TODO how to actually initialize
+        boolean initialized = db.initialize("spl-net/Courses.txt"); //TODO how to actually initialize
         if (!initialized) {
             System.out.println("Couldn't initialize database, Exiting...");
             System.exit(1);
