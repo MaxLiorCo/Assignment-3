@@ -19,14 +19,14 @@ public class STUDENTREGCommand implements Command<BGRSProtocol<?>> {
     public Serializable execute(BGRSProtocol<?> protocol) {
         Database db = Database.getInstance();
         if (protocol.getUser() != null)
-            return new ERRMessage().sendERR("1");
+            return new ERRMessage().sendERR("2");
         String userName = getUserName(message);
         String password = getPassword(message);
         boolean wasRegistered = db.registerUser(new User(userName, password, false));
         if (wasRegistered) {
-            return new ACKMessage().sendACK("1", "");
+            return new ACKMessage().sendACK("2", "");
         }
         else
-            return new ERRMessage().sendERR("1");
+            return new ERRMessage().sendERR("2");
     }
 }

@@ -31,7 +31,7 @@ public class Course {
      *  This function is called when we want to register a student.
      * @throws Error exception upon failed registration attempt.
      */
-    public synchronized void registerStudent(User student) throws Error {
+    public void registerStudent(User student) throws Error {
         if (kdamCourses.length == 0 || assertKdam(student.getRegisteredCoursesArray()))
             synchronized (this) { //synchronized is necessary in situations where 2 different students try to register to the same course
                 if (numOfRegisteredStudents < numOfMaxStudents) {

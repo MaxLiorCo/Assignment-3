@@ -114,7 +114,14 @@ public class User {
      */
     public boolean removeCourse(Course courseToRemove){
         //try to remove user from course & course from user, both must happen
-        return courseToRemove.removeStudent(this.user) & courseIndex.remove((Integer) courseToRemove.getCourseNum());
+        int courseNum = courseToRemove.getCourseNum();
+        int indexOfCourse = 0;
+        while (indexOfCourse < allCourses.length) {
+            if (allCourses[indexOfCourse] == courseNum)
+                break;
+            indexOfCourse++;
+        }
+        return courseToRemove.removeStudent(this.user) & courseIndex.remove((Integer)indexOfCourse);
     }
     public boolean isAdmin(){
         return isAdmin;

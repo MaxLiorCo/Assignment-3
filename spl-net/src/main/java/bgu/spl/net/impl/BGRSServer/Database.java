@@ -47,7 +47,7 @@ public class Database {
       public boolean initialize(String coursesFilePath) {
         File file = new File(coursesFilePath);
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-            User.initializeCourseArray(coursesFilePath); //the weird sorted by file, array of courses user has registered to
+            User.initializeCourseArray(coursesFilePath); //the weird, sorted by file array of courses, user has registered to
             String courseLine;
             while ((courseLine = br.readLine()) != null) {
                 short courseNum = Short.decode(parser(courseLine)); // course ID
@@ -122,7 +122,7 @@ public class Database {
      * @param user we want to register
      * @return True iff the specific user wasn't already taken, thus user was registered successfully to the database.
      */
-    public boolean registerUser(User user){
+    public synchronized boolean registerUser(User user){
         if(registeredUsers.containsKey(user.getUserName()))
             return false;
         registeredUsers.put(user.getUserName(), user);
