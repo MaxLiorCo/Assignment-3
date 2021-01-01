@@ -2,6 +2,9 @@
 #include <connectionHandler.h>
 #include <encdec.h>
 #include <bitset>
+#include <mutex>
+#include <thread>
+
 
 using namespace std;
 
@@ -61,6 +64,7 @@ int main(int argc, char *argv[]) {
     KeyboardListener kb(1, mutex, session, &connectionHandler);
 
     std::thread th1(&KeyboardListener::run, &kb);
+    th1.detach();
 
     //From here we will see the rest of the BGRS client implementation:
     while (session) {
@@ -108,7 +112,7 @@ int main(int argc, char *argv[]) {
                 std::cout << "Disconnected. Exiting...\n" << std::endl;
                 break;
             }
-            else if(opCodeMessage == 6 | opCodeMessage == 7 | opCodeMessage == 8 | opCodeMessage == 9 | opCodeMessage == 11)
+            else if((opCodeMessage == 6) | (opCodeMessage == 7) | (opCodeMessage == 8) | (opCodeMessage == 9) | (opCodeMessage == 11))
                 cout << str << endl;
 
         }
