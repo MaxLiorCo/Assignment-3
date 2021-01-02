@@ -18,7 +18,6 @@ public class BGRSEncoderDecoder implements MessageEncoderDecoder<Serializable> {
 
     @Override
     public Command decodeNextByte(byte nextByte) {
-       // System.out.println(Integer.toBinaryString((nextByte+256)%256));
         if (nextByte == '\0') { //next byte equals null
             counter++;
         }

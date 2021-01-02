@@ -18,7 +18,7 @@ public class STUDENTREGCommand implements Command<BGRSProtocol<?>> {
     @Override
     public Serializable execute(BGRSProtocol<?> protocol) {
         Database db = Database.getInstance();
-        if (protocol.getUser() != null)
+        if (protocol.getUser() != null) // client already logged in
             return new ERRMessage().sendERR("2");
         String userName = getUserName(message);
         String password = getPassword(message);

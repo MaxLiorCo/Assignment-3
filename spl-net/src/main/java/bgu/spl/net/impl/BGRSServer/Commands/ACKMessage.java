@@ -1,7 +1,5 @@
 package bgu.spl.net.impl.BGRSServer.Commands;
 
-
-
 import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 

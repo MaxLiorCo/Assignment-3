@@ -34,7 +34,6 @@ public class LOGINCommand implements Command<BGRSProtocol<?>> {
         if (user == null || (!(password.equals(user.getPassword())) | user.isLoggedIn())) // such user doesn't exist or password doesn't match or this user already logged-in by another client
             return new ERRMessage().sendERR("3");
         // All of the above doesn't happen, means that: username and password given by the client are correct, and no-one uses the user right now.
-        //TODO maybe this is unnecessary?
         synchronized (user) { // synchronized to prevent situations where 2 different clients try to login concurrently to the same user.
             if (!user.isLoggedIn()) {
                 user.setLoggedIn(true);
