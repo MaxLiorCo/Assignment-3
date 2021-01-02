@@ -65,8 +65,8 @@ int main(int argc, char *argv[]) {
 
     //From here we will see the rest of the BGRS client implementation:
     while (session) {
-        const short bufsize = 1024;
-/*        char buf[bufsize];
+ /*     const short bufsize = 1024;
+        char buf[bufsize];
         std::cin.getline(buf, bufsize);
         std::string line(buf);
 

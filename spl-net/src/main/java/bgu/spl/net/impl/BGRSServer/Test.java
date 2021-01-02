@@ -3,7 +3,7 @@ package bgu.spl.net.impl.BGRSServer;
 public class Test {
     public static void main(String [] args){
         Database db = Database.getInstance();
-        db.initialize("spl-net/Courses.txt");
+        db.initialize("./Courses.txt");
         User user = new User("lior", "123", false);
         db.registerUser(user);
         user.registerToCourse(db.getCourses().get((short)101));

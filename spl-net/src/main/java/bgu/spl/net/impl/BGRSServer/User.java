@@ -22,11 +22,11 @@ public class User {
         user = _user;
         password =_password;
         isAdmin = _isAdmin;
-        courseIndex = new ArrayList<>();
+        courseIndex = new ArrayList<>(); //stores the indexes of courses in allCourses array
         loggedIn = false;
     }
 
-    // courses ordered by Course.txt called from database
+    // courses ordered by "Course.txt". called from database
     public static void initializeCourseArray(String coursesFilePath){
         File file = new File(coursesFilePath);
         List<Integer> listCourse = new LinkedList<>();
@@ -57,7 +57,6 @@ public class User {
         if (course == null)
             throw new Error("no such course");
 
-        //should take care of "course is full" & "no relevant kdam courses"
         course.registerStudent(this);
 
         int courseNum = course.getCourseNum();
@@ -72,19 +71,18 @@ public class User {
                     registered = true;
                 } else {
                     //we need to find a place for this index amongst indexes of already registered courses
-                    //int listIndexPrevValue = -1;
                     while (it.hasNext() & !registered) {
                         int listIndexValue = it.next();
                         if (indexOfCourse == listIndexValue)
                             throw new Error("already registered");
-                        if (/*listIndexPrevValue < indexOfCourse &&*/ indexOfCourse < listIndexValue) {
+                        if (indexOfCourse < listIndexValue) {
                             courseIndex.add(insertIndex, indexOfCourse);
                             registered = true;
                         }
-                        //listIndexPrevValue = listIndexValue;
                         insertIndex++;
                     }
-                    if (!registered)//indexOfCourse is larger than that of any existing courses
+                    //true when indexOfCourse is larger than that of any existing courses
+                    if (!registered)
                     {
                         courseIndex.add(insertIndex, indexOfCourse);
                         registered = true;
@@ -93,7 +91,7 @@ public class User {
             }
         }
     }
-
+    //an array of courses the user is registered to
     public Integer[] getRegisteredCoursesArray(){
         Integer[] array = new Integer[courseIndex.size()];
         int i = 0;
@@ -104,13 +102,8 @@ public class User {
         return array;
     }
 
-    /**
-     * Removes the desired course from registered courses of the student.
-     * @param courseToRemove
-     * @return true upon successful removal, false otherwise (if student isn't registered to this course from the beginning, etc)
-     */
+    //try to remove user from course & course from user, both must happen
     public boolean removeCourse(Course courseToRemove) {
-        //try to remove user from course & course from user, both must happen
         int courseNum = courseToRemove.getCourseNum();
         int indexOfCourse = 0;
         while (indexOfCourse < allCourses.length) {
