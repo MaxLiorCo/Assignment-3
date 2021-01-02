@@ -2,14 +2,13 @@ package bgu.spl.net.impl.BGRSServer;
 
 import bgu.spl.net.srv.Server;
 
-public class ReactorMain {
+public class TPCMain {
     public static void main(String[] args) {
         Database db = Database.getInstance();//one shared object
         boolean initialized = db.initialize("./Courses.txt");
 
         if (initialized) {
-            Server.reactor(
-                    Integer.decode(args[1]),
+            Server.threadPerClient(
                     Integer.decode(args[0]), //port
                     () -> new BGRSProtocol(db), //protocol factory
                     BGRSEncoderDecoder::new //message encoder decoder factory
