@@ -1,13 +1,12 @@
 #include <iostream>
 #include <connectionHandler.h>
 #include <encdec.h>
-#include <bitset>
 #include <mutex>
-
 #include <thread>
 
 using namespace std;
 
+//Thread Task that listens to keyboard input and sends to server
 class KeyboardListener {
 private:
     int _id;
@@ -34,8 +33,6 @@ public:
                 std::cout << "Disconnected. Exiting...\n" << std::endl;
                 break;
             }
-            // connectionHandler.sendBytes()
-            //std::cout << "Sent " << toBytes.length() << " bytes to server" << std::endl;
         }
     }
 };
@@ -61,32 +58,14 @@ int main(int argc, char *argv[]) {
     std::mutex mutex;
     KeyboardListener kb(1, mutex, session, &connectionHandler);
 
+    //activate a thread that listens to keyboard
     std::thread th1(&KeyboardListener::run, &kb);
 
-    //From here we will see the rest of the BGRS client implementation:
+    //Session with server
     while (session) {
-        const short bufsize = 1024;
-/*        char buf[bufsize];
-        std::cin.getline(buf, bufsize);
-        std::string line(buf);
-
-        std::string toBytes = encdec::encode(line);
-        if (toBytes.empty()) {
-            continue;
-        }
-
-        //TODO convert line to required byte array and length
-        if (!connectionHandler.sendBytes( toBytes.c_str() , toBytes.length())) {
-            std::cout << "Disconnected. Exiting...\n" << std::endl;
-            break;
-        }
-        // connectionHandler.sendBytes()
-        std::cout << "Sent " <<  toBytes.length() << " bytes to server" << std::endl;*/
-  //----------------------------------------------------------------------------------------------------
         char opCodeArr[2];
         char messageOpCodeArr[2];
-        // Get back an answer: by using the expected number of bytes (len bytes + newline delimiter)
-        // We could also use: connectionHandler.getline(answer) and then get the answer without the newline char at the end
+        //Waiting for server reply, BLOCKING
         if (!connectionHandler.getBytes(opCodeArr, 2)) {
             std::cout << "Disconnected. Exiting...\n" << std::endl;
             break;
@@ -95,32 +74,29 @@ int main(int argc, char *argv[]) {
             std::cout << "Disconnected. Exiting...\n" << std::endl;
             break;
         }
-       // cout << opCodeArr[0] + 0 << " " << opCodeArr[1] + 0<<endl;
         short opCode = encdec::decodeTwoBytes(opCodeArr);
         short opCodeMessage = encdec::decodeTwoBytes(messageOpCodeArr);
+        //Received acknowledge message
         if(opCode == 12) {
             cout << "ACK " << opCodeMessage << endl;
             std::string str = "";
             if(opCodeMessage == 4) //Logout
                 session = false;
-            //TODO decide which opCodeMessages return additional strings (if required to do so)
-            /*if (!connectionHandler.getFrameAscii(str, '\0')) {
-                std::cout << "Disconnected. Exiting...\n" << std::endl;
-                break;
-            }*/
             if (!encdec::decodeString(connectionHandler, str)) {
                 std::cout << "Disconnected. Exiting...\n" << std::endl;
                 break;
             }
+            //Cases which return a subsequent message to ACK
             else if((opCodeMessage == 6) | (opCodeMessage == 7) | (opCodeMessage == 8) | (opCodeMessage == 9) | (opCodeMessage == 11)) {
                 cout << str << endl;
             }
         }
+        //Received error message
         else if(opCode == 13){
             cout << "ERR " << opCodeMessage << endl;
         } else cout << "Incorrect OpCode returned" << endl;
     }
-  //  std::cout << "session finished" << std::endl;
+    //Session finished
     th1.detach();
     return 0;
 }
