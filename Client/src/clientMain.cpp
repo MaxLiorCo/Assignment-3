@@ -113,7 +113,6 @@ int main(int argc, char *argv[]) {
                 break;
             }
             else if((opCodeMessage == 6) | (opCodeMessage == 7) | (opCodeMessage == 8) | (opCodeMessage == 9) | (opCodeMessage == 11)) {
-                str = str.substr(str.find('[')); //TODO
                 cout << str << endl;
             }
         }

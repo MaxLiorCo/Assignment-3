@@ -17,7 +17,6 @@ public class COURSESTATCommand implements Command<BGRSProtocol<?>> {
 
     @Override
     public Serializable execute(BGRSProtocol<?> protocol) {
-        System.out.println("reached COURSESTAT");
         User user = protocol.getUser();
         if (user == null || !user.isAdmin())
             return new ERRMessage().sendERR("7");

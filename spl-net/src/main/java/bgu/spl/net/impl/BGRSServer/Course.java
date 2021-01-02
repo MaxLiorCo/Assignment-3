@@ -32,7 +32,7 @@ public class Course {
      * @throws Error exception upon failed registration attempt.
      */
     public void registerStudent(User student) throws Error {
-        if (!registeredStudentList.contains(student.getUserName()) && (kdamCourses.length == 0 || assertKdam(student.getRegisteredCoursesArray())))
+        if (!registeredStudentList.contains(student.getUserName()) && (kdamCourses.length == 0 || hasAllKdam(student.getRegisteredCoursesArray())))
             synchronized (this) { //synchronized is necessary in situations where 2 different students try to register to the same course
                 if (numOfRegisteredStudents < numOfMaxStudents) {
                     registeredStudentList.add(student.getUserName());
@@ -43,7 +43,7 @@ public class Course {
         throw new Error("No place left in this course");
     }
 
-    private boolean assertKdam(Integer[] registeredCoursesArray) throws Error {
+    private boolean hasAllKdam(Integer[] registeredCoursesArray) throws Error {
         List<Integer> coursesOfStudent = Arrays.asList(registeredCoursesArray);
         List<Integer> kdamCoursesList =Arrays.asList(kdamCourses);
         if(!(coursesOfStudent.containsAll(kdamCoursesList)))
@@ -70,7 +70,7 @@ public class Course {
     public List<String> getRegisteredStudentList() {
         return registeredStudentList;
     }
-    public boolean removeStudent(String username){
+    public synchronized boolean removeStudent(String username){
         if (registeredStudentList.remove(username)){
             numOfRegisteredStudents--;
             return true;
