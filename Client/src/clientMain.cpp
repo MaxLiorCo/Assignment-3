@@ -35,7 +35,7 @@ public:
                 break;
             }
             // connectionHandler.sendBytes()
-            std::cout << "Sent " << toBytes.length() << " bytes to server" << std::endl;
+            //std::cout << "Sent " << toBytes.length() << " bytes to server" << std::endl;
         }
     }
 };

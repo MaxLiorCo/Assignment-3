@@ -31,7 +31,7 @@ public class STUDENTSTATCommand implements Command<BGRSProtocol<?>> {
         String arrToString = Arrays.toString(registeredCourses); // convert array to string
         arrToString = arrToString.replaceAll("\\s+", ""); // remove all spaces from string
         studentData += "Student: " + toStat.getUserName() + "\n";
-        studentData += "Courses " + arrToString;
+        studentData += "Courses: " + arrToString;
         return new ACKMessage().sendACK("8", studentData);
     }
 }
