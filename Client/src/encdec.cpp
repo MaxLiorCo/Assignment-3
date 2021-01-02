@@ -117,3 +117,24 @@ short encdec::decodeTwoBytes(char replyOpCode[]) {
     return bytesToShort(replyOpCode);
 }
 
+//we assume a '\0' delimiter
+bool encdec::decodeString(ConnectionHandler &ch, string &result){
+    char character;
+    // Stop when we encounter the null character.
+    // Notice that the null character is not appended to the frame string.
+    try {
+        do{
+            if(!ch.getBytes(&character, 1))
+            {
+                return false;
+            }
+            if(character!='\0')
+                result.append(1, character);
+        }while ('\0' != character);
+    } catch (std::exception& e) {
+        std::cerr << "recv failed2 (Error: " << e.what() << ')' << std::endl;
+        return false;
+    }
+    return true;
+}
+

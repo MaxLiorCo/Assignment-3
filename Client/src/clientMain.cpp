@@ -100,12 +100,15 @@ int main(int argc, char *argv[]) {
         short opCodeMessage = encdec::decodeTwoBytes(messageOpCodeArr);
         if(opCode == 12) {
             cout << "ACK " << opCodeMessage << endl;
-            char buffer[bufsize];
-            std::string str(buffer);
+            std::string str = "";
             if(opCodeMessage == 4) //Logout
                 session = false;
             //TODO decide which opCodeMessages return additional strings (if required to do so)
-            if (!connectionHandler.getFrameAscii(str, '\0')) {
+            /*if (!connectionHandler.getFrameAscii(str, '\0')) {
+                std::cout << "Disconnected. Exiting...\n" << std::endl;
+                break;
+            }*/
+            if (!encdec::decodeString(connectionHandler, str)) {
                 std::cout << "Disconnected. Exiting...\n" << std::endl;
                 break;
             }

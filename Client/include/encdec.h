@@ -4,6 +4,7 @@
 #ifndef CLIENT_ENCDEC_H
 #define CLIENT_ENCDEC_H
 #include <iostream>
+#include "connectionHandler.h"
 
 class encdec {
 private:
@@ -12,6 +13,7 @@ private:
 public:
     static std::string encode(std::string &line);
     static short decodeTwoBytes(char replyOpCode[]);
+    static bool decodeString(ConnectionHandler &ch, std::string &result);
 };
 
 #endif //CLIENT_ENCDEC_H
