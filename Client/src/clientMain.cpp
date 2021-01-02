@@ -112,9 +112,10 @@ int main(int argc, char *argv[]) {
                 std::cout << "Disconnected. Exiting...\n" << std::endl;
                 break;
             }
-            else if((opCodeMessage == 6) | (opCodeMessage == 7) | (opCodeMessage == 8) | (opCodeMessage == 9) | (opCodeMessage == 11))
+            else if((opCodeMessage == 6) | (opCodeMessage == 7) | (opCodeMessage == 8) | (opCodeMessage == 9) | (opCodeMessage == 11)) {
+                str = str.substr(str.find('[')); //TODO
                 cout << str << endl;
-
+            }
         }
         else if(opCode == 13){
             cout << "ERR " << opCodeMessage << endl;
