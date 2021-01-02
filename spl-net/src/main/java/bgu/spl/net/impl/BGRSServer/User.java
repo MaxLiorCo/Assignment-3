@@ -121,7 +121,7 @@ public class User {
                 break;
             indexOfCourse++;
         }
-        return courseToRemove.removeStudent(this.user) & courseIndex.remove((Integer)indexOfCourse);
+        return courseToRemove.removeStudent(this.user) && courseIndex.remove((Integer)indexOfCourse);
     }
     public boolean isAdmin(){
         return isAdmin;

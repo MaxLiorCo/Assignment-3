@@ -32,7 +32,7 @@ public class Course {
      * @throws Error exception upon failed registration attempt.
      */
     public void registerStudent(User student) throws Error {
-        if (kdamCourses.length == 0 || assertKdam(student.getRegisteredCoursesArray()))
+        if (!registeredStudentList.contains(student.getUserName()) && (kdamCourses.length == 0 || assertKdam(student.getRegisteredCoursesArray())))
             synchronized (this) { //synchronized is necessary in situations where 2 different students try to register to the same course
                 if (numOfRegisteredStudents < numOfMaxStudents) {
                     registeredStudentList.add(student.getUserName());
