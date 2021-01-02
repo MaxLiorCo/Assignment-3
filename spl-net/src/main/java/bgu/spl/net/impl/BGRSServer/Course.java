@@ -71,7 +71,10 @@ public class Course {
         return registeredStudentList;
     }
     public boolean removeStudent(String username){
-        numOfRegisteredStudents--;
-        return registeredStudentList.remove(username);
+        if (registeredStudentList.remove(username)){
+            numOfRegisteredStudents--;
+            return true;
+        }
+        return false;
     }
 }
