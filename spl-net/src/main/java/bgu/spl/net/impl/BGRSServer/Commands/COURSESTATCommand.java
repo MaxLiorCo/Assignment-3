@@ -34,7 +34,7 @@ public class COURSESTATCommand implements Command<BGRSProtocol<?>> {
         String arrToString = Arrays.toString(array); //converting array to string
         arrToString = arrToString.replaceAll("\\s+", ""); // removes all spaces
         courseData += "Course: (" + course.getCourseNum() + ") " + course.getCourseName() + "\n";
-        courseData += "Seats Available: " + numOfRegistered + "/" + totalSeats + "\n";
+        courseData += "Seats Available: " + (course.getNumOfMaxStudents()-course.getNumOfRegisteredStudents()) + "/" + totalSeats + "\n";
         courseData += "Students Registered: " + arrToString;
         return new ACKMessage().sendACK("7", courseData);
 
