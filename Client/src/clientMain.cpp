@@ -93,7 +93,7 @@ int main(int argc, char *argv[]) {
         }
         //Received error message
         else if(opCode == 13){
-            cout << "ERR " << opCodeMessage << endl;
+            cout << "ERROR " << opCodeMessage << endl;
         } else cout << "Incorrect OpCode returned" << endl;
     }
     //Session finished

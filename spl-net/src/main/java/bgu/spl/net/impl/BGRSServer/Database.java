@@ -31,6 +31,7 @@ public class Database {
     private Database() {
         registeredUsers = new ConcurrentHashMap<>();
         courses = new ConcurrentHashMap<>();
+        initialize("./Courses.txt");
     }
 
     /**
@@ -44,7 +45,7 @@ public class Database {
      * loades the courses from the file path specified
      * into the Database, returns true if successful.
      */
-      public boolean initialize(String coursesFilePath) {
+      boolean initialize(String coursesFilePath) {
         File file = new File(coursesFilePath);
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             User.initializeCourseArray(coursesFilePath); //the weird, sorted by file array of courses, user has registered to
